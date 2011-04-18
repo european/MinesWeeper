@@ -106,7 +106,6 @@ public class MWModel extends Observable {
 		public void actionPerformed(ActionEvent e) {
 			timePlayed++;
 
-			// notify gameFrame that time has changed
 			setChanged();
 			notifyObservers();
 		}

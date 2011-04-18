@@ -178,11 +178,5 @@ public class MWViewer extends JFrame implements Observer {
 		setRows(model.getRows());
 		setCols(model.getCols());		
 	}
-	
-	/*public void update(Observable arg0, Object arg1) {
-        Wind wind = (Wind) arg1;
-        direction.setText(wind.getDir().toString());
-        speed.setText(String.valueOf(wind.getSpeed()));
-    }*/
 
 }
