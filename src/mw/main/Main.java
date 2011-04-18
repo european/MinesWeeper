@@ -11,6 +11,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		// jetzt ist es auf meinem Rechner 15:44
+		
 		 Runnable gui = new Runnable() {
 			 
 	            @Override
