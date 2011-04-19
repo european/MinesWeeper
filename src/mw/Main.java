@@ -27,6 +27,7 @@ public class Main {
         new BoardController(boardModel, boardPanel);
         new GameController(boardModel, gameFrame, boardPanel);
 
+        gameFrame.pack();
         gameFrame.repaint();
         gameFrame.validate();		
 

@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -20,23 +21,24 @@ import javax.swing.KeyStroke;
 
 import mw.model.BoardModel;
 
+@SuppressWarnings("serial")
 public class GameFrame extends JFrame implements Observer {
 	
 	//private MWModel m_model;
 	
 	private JLabel lZeit;	
-	private JLabel lRestMinen;
+//	private JLabel lRestMinen;
 	
 	private JProgressBar progressBar;
 	
-	private JPanel contentPanel;
+//	private JPanel contentPanel;
 	private JPanel mainPanel;
-	private JPanel gamePanel;
+//	private JPanel gamePanel;
 	
-	private FeldButton[][] board;
+//	private FeldButton[][] board;
 	
-	private int rows = 8;
-	private int cols = 8;
+//	private int rows = 8;
+//	private int cols = 8;
 	
 	private BoardPanel boardPanel;
     private BoardModel boardModel;
@@ -53,9 +55,7 @@ public class GameFrame extends JFrame implements Observer {
         this.setVisible(true);
         this.setResizable(false);
         
-        build();
-        
-        pack();
+        build();        
 	}
 	
 	
@@ -70,16 +70,15 @@ public class GameFrame extends JFrame implements Observer {
 
 	private void build(){
 		
-		mainPanel = new JPanel();		
-		gamePanel = new JPanel();			
-		lZeit = new JLabel();
+		mainPanel = new JPanel();				
+		lZeit = new JLabel("0");
 		
-		
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));		
 		mainPanel.add(lZeit);
-		mainPanel.add(gamePanel);	
+		mainPanel.add(boardPanel);	
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
-		//this.add(getJProgressBar(), BorderLayout.SOUTH);
+		this.add(getJProgressBar(), BorderLayout.SOUTH);
 	}
 	
 	/**
@@ -125,11 +124,27 @@ public class GameFrame extends JFrame implements Observer {
 
 		return mb;
 	}
+	
+	/**
+	 * This method initializes jProgressBar
+	 * 
+	 * @return javax.swing.JProgressBar
+	 */
+	public JProgressBar getJProgressBar() {		
+		if (progressBar == null) {
+			progressBar = new JProgressBar();
+			progressBar.setMaximum(boardModel.getCols()
+					* boardModel.getRows());
+			progressBar.setStringPainted(true);
+		}
+		
+		return progressBar;
+	}
 
 	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+	public void update(Observable obs, Object obj) {
+		if(obs == boardModel)
+			lZeit.setText(String.valueOf(boardModel.getTimePlayed()));		
 	}
 
 }

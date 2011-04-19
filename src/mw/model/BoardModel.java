@@ -16,7 +16,7 @@ public class BoardModel extends Observable {
 	public static final int EMPTYVALUE = 0;
 
 	private Timer timer;
-	private int timePlayed;
+	private int timePlayed;	
 
 	private int[][] board;
 	private ButtonStatus buttonStatus;
@@ -25,11 +25,9 @@ public class BoardModel extends Observable {
 
 	public BoardModel(Difficulty difficulty) {
 		setDifficulty(difficulty);		
-		timer = new Timer(1000, new timerAction());
+		timer = new Timer(1000, new timerAction());		
 	}
 
-	
-	
 	
 	/**
 	 * Erzeugt ein neues Spiel mit den Anzahl der Minen 
@@ -39,11 +37,7 @@ public class BoardModel extends Observable {
 	 * @param cols - Anzahl der Spalten
 	 * @param anzahlMinen
 	 */	
-	//public void newGame(int rows, int cols, int anzahlMinen) {
 	public void newGame() {
-//		setRows(rows);
-//		setCols(cols);
-//		setAnzahlMinen(anzahlMinen);
 		board = new int[getRows()][getCols()];
 
 		int counter = 1;
@@ -134,17 +128,36 @@ public class BoardModel extends Observable {
    }
    
    /**
-	 * @return the difficulty
-	 */
-	public Difficulty getDifficulty() {
-		return difficulty;
+    * Entscheidet Anhand des Schwierigkeitsgrades die Anzahl der Minen, Spalten und Zeilen
+    * @param difficulty
+    */
+   public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+
+       switch(difficulty) {
+           case MEDIUM:
+        	   setRows(16);
+        	   setCols(16);
+               setAnzahlMinen(40);
+               break;
+           case HARD:
+        	   setRows(25);
+        	   setCols(20);
+               setAnzahlMinen(99);
+               break;
+           case EASY:
+               setRows(9);
+               setCols(9);
+               setAnzahlMinen(10);
+               break;
+           default:
+               System.out.println("Wrong difficultysetting");
+               break;
+       }
 	}
 
-	/**
-	 * @param difficulty the difficulty to set
-	 */
-	public void setDifficulty(Difficulty difficulty) {
-		this.difficulty = difficulty;
+	public Difficulty getDifficulty() {
+		return difficulty;
 	}
 
 	/**
@@ -159,6 +172,21 @@ public class BoardModel extends Observable {
 	 */
 	public ButtonStatus getButtonStatus() {
 		return buttonStatus;
+	}
+	
+	/**
+	 * @return the timePlayed
+	 */
+	public int getTimePlayed() {
+		return timePlayed;
+	}
+
+
+	/**
+	 * @param timePlayed the timePlayed to set
+	 */
+	public void setTimePlayed(int timePlayed) {
+		this.timePlayed = timePlayed;
 	}
 
 }
