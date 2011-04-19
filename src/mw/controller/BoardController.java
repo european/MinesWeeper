@@ -9,6 +9,14 @@ import mw.view.FeldButton;
 
 public class BoardController {
 	
+	// Hier werden alle Aktionen gesetzt, die vom Spiel Feld kommen
+	
+	// MouseListener für die Felder (rechts klick/ links klick)
+	
+	
+	
+	
+	
 	/*class ToggleButtonListner implements MouseListener {
 
         public void mouseClicked(MouseEvent e) {}

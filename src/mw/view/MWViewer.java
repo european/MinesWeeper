@@ -57,14 +57,11 @@ public class MWViewer extends JFrame implements Observer {
 		pack();
 		setVisible(true);
 		
+		
 		/* Center the frame */
-
 		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-
 		Rectangle frameDim = getBounds();
-
-		setLocation((screenDim.width - frameDim.width) / 2,
-		(screenDim.height - frameDim.height) / 2);
+		setLocation((screenDim.width - frameDim.width) / 2,	(screenDim.height - frameDim.height) / 2);
 		
 	}
 	
@@ -72,9 +69,10 @@ public class MWViewer extends JFrame implements Observer {
 		
 		mainPanel = new JPanel();		
 		gamePanel = new JPanel();			
-		
+		lZeit = new JLabel();
 		buildGameBoard();
 		
+		mainPanel.add(lZeit);
 		mainPanel.add(gamePanel);	
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
@@ -95,6 +93,7 @@ public class MWViewer extends JFrame implements Observer {
 		mDatei = new JMenu("Datei");
 		mDatei.setMnemonic(KeyEvent.VK_D);
 		dateiNeu = new JMenuItem("Neues Spiel");
+		
 
 		dateiOptions = new JMenuItem("Einstellungen");
 		dateiOptions.setMnemonic(KeyEvent.VK_E);
@@ -177,6 +176,20 @@ public class MWViewer extends JFrame implements Observer {
 		MWModel model = (MWModel) arg1;
 		setRows(model.getRows());
 		setCols(model.getCols());		
+	}
+
+	/**
+	 * @param lZeit the lZeit to set
+	 */
+	public void setlZeit(JLabel lZeit) {
+		this.lZeit = lZeit;
+	}
+
+	/**
+	 * @return the lZeit
+	 */
+	public JLabel getlZeit() {
+		return lZeit;
 	}
 
 }

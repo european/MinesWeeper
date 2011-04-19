@@ -1,5 +1,5 @@
 package mw.model;
 
 public enum ButtonStatus {
-	BOMBE, FLAG, CLICKED, DEFAULT
+	MINE, MINE_EXPLODED, FLAG, CLICKED, DEFAULT
 }
