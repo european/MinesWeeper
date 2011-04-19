@@ -2,7 +2,6 @@ package mw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -19,15 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.KeyStroke;
 
-import mw.controller.MWController;
+import mw.model.BoardModel;
 
-import mw.model.MWModel;
-
-
-@SuppressWarnings("serial")
-public class MWViewer extends JFrame implements Observer {
-
-	private MWController controller;
+public class GameFrame extends JFrame implements Observer {
+	
 	//private MWModel m_model;
 	
 	private JLabel lZeit;	
@@ -35,6 +29,7 @@ public class MWViewer extends JFrame implements Observer {
 	
 	private JProgressBar progressBar;
 	
+	private JPanel contentPanel;
 	private JPanel mainPanel;
 	private JPanel gamePanel;
 	
@@ -42,35 +37,43 @@ public class MWViewer extends JFrame implements Observer {
 	
 	private int rows = 8;
 	private int cols = 8;
-		
 	
+	private BoardPanel boardPanel;
+    private BoardModel boardModel;
 
-	public MWViewer(MWController controller){
-		super("MinesWeeper");
-		this.controller = controller;
-		//this.m_model = model;
-				
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setLayout(new BorderLayout());
-		
-		init();
-		pack();
-		setVisible(true);
-		
-		
+	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
+		this.boardPanel = boardPanel;
+        this.boardModel = boardModel;        
+        
+        this.setLayout(new BorderLayout());
+        
+        setFrameLocation();
+        
+        this.setTitle("MinesWeeper v3");
+        this.setVisible(true);
+        this.setResizable(false);
+        
+        build();
+        
+        pack();
+	}
+	
+	
+	private void setFrameLocation() {
 		/* Center the frame */
 		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle frameDim = getBounds();
 		setLocation((screenDim.width - frameDim.width) / 2,	(screenDim.height - frameDim.height) / 2);
 		
 	}
-	
-	private void init(){
+
+
+	private void build(){
 		
 		mainPanel = new JPanel();		
 		gamePanel = new JPanel();			
 		lZeit = new JLabel();
-		buildGameBoard();
+		
 		
 		mainPanel.add(lZeit);
 		mainPanel.add(gamePanel);	
@@ -122,74 +125,11 @@ public class MWViewer extends JFrame implements Observer {
 
 		return mb;
 	}
-	
-	private void buildGameBoard(){
-		gamePanel.removeAll();
-		
-		board = new FeldButton[getRows()][getCols()];
-		
-		gamePanel.setLayout(new GridLayout(getRows(), getCols()));			
-		
-		for(int y = 0; y < getRows(); y++){
-			for(int x = 0; x < getCols(); x++){
-				board[y][x] = new FeldButton(y,x); 
-				board[y][x].setPreferredSize(new Dimension(40, 28));				
-				gamePanel.add(board[y][x]);				
-			}
-		}	
-		
-		gamePanel.setEnabled(true);
-		this.repaint();
-		this.validate();
-	}
 
-	/**
-	 * @return the rows
-	 */
-	public int getRows() {
-		return rows;
-	}
-
-	/**
-	 * @param rows the rows to set
-	 */
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
-
-	/**
-	 * @return the cols
-	 */
-	public int getCols() {
-		return cols;
-	}
-
-	/**
-	 * @param cols the cols to set
-	 */
-	public void setCols(int cols) {
-		this.cols = cols;
-	}
-	
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		MWModel model = (MWModel) arg1;
-		setRows(model.getRows());
-		setCols(model.getCols());		
-	}
-
-	/**
-	 * @param lZeit the lZeit to set
-	 */
-	public void setlZeit(JLabel lZeit) {
-		this.lZeit = lZeit;
-	}
-
-	/**
-	 * @return the lZeit
-	 */
-	public JLabel getlZeit() {
-		return lZeit;
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

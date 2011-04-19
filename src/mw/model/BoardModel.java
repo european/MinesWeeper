@@ -24,7 +24,6 @@ public class BoardModel extends Observable {
 	private Difficulty difficulty;
 
 	public BoardModel(Difficulty difficulty) {
-//		newGame(8, 8, 10);
 		setDifficulty(difficulty);		
 		timer = new Timer(1000, new timerAction());
 	}
@@ -40,10 +39,11 @@ public class BoardModel extends Observable {
 	 * @param cols - Anzahl der Spalten
 	 * @param anzahlMinen
 	 */	
-	public void newGame(int rows, int cols, int anzahlMinen) {
-		setRows(rows);
-		setCols(cols);
-		setAnzahlMinen(anzahlMinen);
+	//public void newGame(int rows, int cols, int anzahlMinen) {
+	public void newGame() {
+//		setRows(rows);
+//		setCols(cols);
+//		setAnzahlMinen(anzahlMinen);
 		board = new int[getRows()][getCols()];
 
 		int counter = 1;
