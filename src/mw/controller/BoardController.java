@@ -32,15 +32,32 @@ public class BoardController {
         // listen for mouse clicks on the boardgrid
         this.boardPanel.addClickListener(new ToggleButtonListner());
     }
+    
+    /**
+     * Zeigt die aktuelle Zelle
+     * @param e - <code>MouseEvent</code>
+     */
+    private void showCell(MouseEvent e) {
+    	FeldButton feldButton = (FeldButton) e.getSource();
+    	int[] coords = new int[2];
+
+        coords = feldButton.getCoords();
+                
+        if (feldButton.getButtonStatus() == ButtonStatus.DEFAULT || feldButton.getButtonStatus() == ButtonStatus.FLAG) {       	
+        	if(feldButton.isMine()){
+        		feldButton.getMineExplodeIcon();
+        		boardPanel.showField();
+        	} else {
+        		feldButton.setText(String.valueOf(boardModel.getBoard()[coords[0]][coords[1]]));
+        	}
+        }
+    }
+    
+    
 	
 	// Hier werden alle Aktionen gesetzt, die vom Spiel Feld kommen
 	
-	// MouseListener für die Felder (rechts klick/ links klick)
-	
-	
-	
-	
-	
+	// MouseListener für die Felder (rechts klick/ links klick)	
 	class ToggleButtonListner implements MouseListener {
 		// tue nichts
         public void mouseClicked(MouseEvent e) {}
@@ -56,6 +73,7 @@ public class BoardController {
                 if(feldButton.getButtonStatus() == ButtonStatus.DEFAULT || feldButton.getButtonStatus() == ButtonStatus.FLAG){
                 	// Toggel der Flagge 
                 	// Und des Status des Enum Wertes
+                	feldButton.toggleFlagButton();
                 }
                     
             }
@@ -63,6 +81,7 @@ public class BoardController {
                 if(feldButton.isFlagged()) {
                     // Wenn das eine Flagge ist
                 }
+                showCell(e);
                 // Sonst zeige die Zelle
             }
         }

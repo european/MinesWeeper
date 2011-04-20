@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import mw.model.BoardModel;
+import mw.model.ButtonStatus;
 
 public class BoardPanel extends JPanel {	
 	
@@ -23,35 +24,25 @@ public class BoardPanel extends JPanel {
 	
 	/**
 	 * Erstellt das Spielfeld
-	 */
-//	public void build() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-	
-	public void build(){
-//		this.removeAll();
-		System.out.println("ich baue");
-		
+	 */	
+	public void build(){		
 		board = new FeldButton[boardModel.getRows()][boardModel.getCols()];
 		
 		this.setLayout(new GridLayout(boardModel.getRows(), boardModel.getCols()));			
 		
 		for(int y = 0; y < boardModel.getRows(); y++){
 			for(int x = 0; x < boardModel.getCols(); x++){
-				board[y][x] = new FeldButton(y,x); 
+				board[y][x] = new FeldButton(); 
+				board[y][x].setCoords(x, y);
 				board[y][x].setPreferredSize(new Dimension(40, 28));				
+				board[y][x].setIsMine(boardModel.isMine(y, x));
 				this.add(board[y][x]);				
 			}
 		}	
-		
-//		this.setEnabled(true);
-//		this.repaint();
-//		this.validate();
 	}
 	
 	/**
-     * 
+     * Fügt die MouseListener hinzu
      * @param e MousListener
      */
     public void addClickListener(MouseListener e) {
@@ -61,9 +52,27 @@ public class BoardPanel extends JPanel {
     }
 
 	private void addListeners() {
-//        for(FeldButton[] but:board)
-//            but.addMouseListener(mouseListener);
+		for(int y = 0; y < boardModel.getRows(); y++){
+			for(int x = 0; x < boardModel.getCols(); x++){				
+				board[y][x].addMouseListener(mouseListener);				
+			}
+		}
 	}
+	
+	public void showField(){
+		for(int y = 0; y < boardModel.getRows(); y++){
+			for(int x = 0; x < boardModel.getCols(); x++){	
+				if(board[y][x].getButtonStatus() == ButtonStatus.DEFAULT){
+					if(board[y][x].isMine()){
+						board[y][x].getMineExplodeIcon();		        		
+		        	} else {
+		        		board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
+		        	}					
+				}
+				
+			}
+		}
+    }
 
 
 	

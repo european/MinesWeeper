@@ -27,7 +27,7 @@ public class GameFrame extends JFrame implements Observer {
 	//private MWModel m_model;
 	
 	private JLabel lZeit;	
-//	private JLabel lRestMinen;
+	private JLabel lRestMinen;
 	
 	private JProgressBar progressBar;
 	
@@ -54,6 +54,7 @@ public class GameFrame extends JFrame implements Observer {
         this.setTitle("MinesWeeper v3");
         this.setVisible(true);
         this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         build();        
 	}
@@ -70,11 +71,26 @@ public class GameFrame extends JFrame implements Observer {
 
 	private void build(){
 		
-		mainPanel = new JPanel();				
+		// Hier befindet sich die Zeit Info und die Anzahl der RestMinen
+		JPanel infoPanel = new JPanel();
+		
+		JLabel lTime = new JLabel("Zeit:");
 		lZeit = new JLabel("0");
 		
+		JLabel lMines = new JLabel("Minen");
+		lRestMinen = new JLabel("0");
+		
+		
+		infoPanel.add(lTime);
+		infoPanel.add(lZeit);
+		infoPanel.add(lMines);
+		infoPanel.add(lRestMinen);
+		
+		
+		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));		
-		mainPanel.add(lZeit);
+		
+		mainPanel.add(infoPanel);
 		mainPanel.add(boardPanel);	
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
@@ -143,8 +159,10 @@ public class GameFrame extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if(obs == boardModel)
-			lZeit.setText(String.valueOf(boardModel.getTimePlayed()));		
+		if(obs == boardModel){
+			lZeit.setText(String.valueOf(boardModel.getTimePlayed()));
+			lRestMinen.setText(String.valueOf(boardModel.getRestMinen()));
+		}
 	}
 
 }

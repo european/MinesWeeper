@@ -8,23 +8,33 @@ import mw.model.ButtonStatus;
 
 @SuppressWarnings("serial")
 public class FeldButton extends JToggleButton {
-	private Icon mine = new ImageIcon(FeldButton.class.getResource("/mw/images/mine.png"));
-	private Icon mineExplode = new ImageIcon(FeldButton.class.getResource("/mw/images/mineExplode.png"));
+	private Icon mineIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/mine.png"));
+	private Icon mineExplodeIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/mineExplode.png"));
+	
+
 	private Icon falg = new ImageIcon(FeldButton.class.getResource("/mw/images/flag.png"));
 	
 	private ButtonStatus buttonStatus;	
 	
-	private int row;
-	private int column;
+//	private int row;
+//	private int column;
+	
+	private int[] coords;
+	
+	private boolean mine;
 
 	/**
 	 * Erzeugt einen neuen FeldButton
 	 * @param row
 	 * @param column
 	 */
-	public FeldButton(int row, int column)	{
-		this.row = row;
-		this.column = column;		
+	public FeldButton()	{
+		coords = new int[2];
+		
+		
+		
+		//this.row = row;
+		//this.column = column;		
 		setButtonStatus(getDefault());
 	}	
 	
@@ -37,13 +47,13 @@ public class FeldButton extends JToggleButton {
 	 * 
 	 * @return row - Anzahl der Zeilen
 	 */
-	public int getRow() { return row; }
+//	public int getRow() { return row; }
 	
 	/**
 	 * 
 	 * @return column - Anzahl der Spalten
 	 */
-	public int getColumn() { return column; }
+//	public int getColumn() { return column; }
 	
 	/**
 	 * Setzt auf das Aktuelle Feld den Enum Wert Flag
@@ -82,8 +92,8 @@ public class FeldButton extends JToggleButton {
 	}
 	
 	
-	public void flagButton(){
-		if(getButtonStatus() == ButtonStatus.FLAG){
+	public void toggleFlagButton(){
+		if(isFlagged()){
 			setButtonStatus(getDefault());
 			this.setIcon(null);
 		}else{
@@ -91,5 +101,43 @@ public class FeldButton extends JToggleButton {
 			this.setIcon(falg);
 		}
 	}
+
+	/**
+    *
+    * @param x
+    * @param y
+    */
+   public void setCoords(int x, int y){
+       coords[0] = x;
+       coords[1] = y;
+   }
+   public int[] getCoords() {
+       return coords;
+   }
+   
+   /**
+   * 
+   * @param isMine
+   */
+   public void setIsMine(boolean mine) { this.mine = mine; }
+
+  public boolean isMine() {
+  	   return mine;
+  }
+  
+  /**
+	 * @return the mine
+	 */
+	public void getMineIcon() {
+		this.setIcon(mineIcon);
+	}
+
+	/**
+	 * @return the mineExplode
+	 */
+	public void getMineExplodeIcon() {
+		this.setIcon(mineExplodeIcon);
+	}
+
 
 }
