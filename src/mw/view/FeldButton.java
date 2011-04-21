@@ -1,5 +1,7 @@
 package mw.view;
 
+import java.awt.Font;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
@@ -15,9 +17,6 @@ public class FeldButton extends JToggleButton {
 
 	private ButtonStatus buttonStatus;
 
-	// private int row;
-	// private int column;
-
 	private int[] coords;
 
 	private boolean mine;
@@ -30,56 +29,47 @@ public class FeldButton extends JToggleButton {
 	 */
 	public FeldButton() {
 		coords = new int[2];
-
-		// this.row = row;
-		// this.column = column;
 		setButtonStatus(getDefault());
+		setFont(new Font(getText(), Font.BOLD, 2));
+		setVisible(true);
 	}
-
+	/**
+	 * Zum Resseten des Buttons
+	 */
 	public void reset() {
 		setEnabled(true);
 		setSelected(false);
-		setButtonStatus(getDefault());
+		setButtonStatus(getDefault());		
 	}
-
-	/**
-	 * 
-	 * @return row - Anzahl der Zeilen
-	 */
-	// public int getRow() { return row; }
-
-	/**
-	 * 
-	 * @return column - Anzahl der Spalten
-	 */
-	// public int getColumn() { return column; }
 
 	/**
 	 * Setzt auf das Aktuelle Feld den Enum Wert Flag
 	 * 
 	 * @return (enum) FeldEigenschaft = Flag
 	 */
-	public ButtonStatus getFlagged() {
+	private ButtonStatus getFlagged() {
 		return ButtonStatus.FLAG;
 	}
 
-	public ButtonStatus getClicked() {
-		return ButtonStatus.CLICKED;
-	}
+//	private ButtonStatus getClicked() {
+//		return ButtonStatus.CLICKED;
+//	}
+//
+//	private ButtonStatus getMine() {
+//		return ButtonStatus.MINE;
+//	}
+//	
+//	private ButtonStatus getMineExplode() {
+//		return ButtonStatus.MINE_EXPLODED;
+//	}
 
-	public ButtonStatus getMined() {
-		return ButtonStatus.MINE;
-	}
-
-	public ButtonStatus getDefault() {
+	private ButtonStatus getDefault() {
 		return ButtonStatus.DEFAULT;
 	}
 
+	
 	public boolean isFlagged() {
-		if (getButtonStatus() == getFlagged()) {
-			return true;
-		}
-		return false;
+		return getButtonStatus() == getFlagged();
 	}
 
 	/**
@@ -101,6 +91,7 @@ public class FeldButton extends JToggleButton {
 		if (isFlagged()) {
 			setButtonStatus(getDefault());
 			this.setIcon(null);
+			this.setEnabled(true);			
 		} else {
 			setButtonStatus(getFlagged());
 			this.setIcon(falg);
@@ -134,17 +125,16 @@ public class FeldButton extends JToggleButton {
 	}
 
 	/**
-	 * @return the mine
+	 * @return the mineIcon
 	 */
-	public void getMineIcon() {
+	public void setMineIcon() {
 		this.setIcon(mineIcon);
 	}
 
 	/**
-	 * @return the mineExplode
+	 * @return the mineExplodeIcon
 	 */
 	public void getMineExplodeIcon() {
 		this.setIcon(mineExplodeIcon);
-	}
-
+	}	
 }

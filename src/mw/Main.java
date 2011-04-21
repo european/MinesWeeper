@@ -13,14 +13,16 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Difficulty diff = Difficulty.EASY;
+		// Setzt die Schwierigkeitsstufe
+		Difficulty diff = Difficulty.EINFACH;
 		// setzt die Spiel einstellungen
 		BoardModel boardModel = new BoardModel(diff);
 		BoardPanel boardPanel = new BoardPanel(boardModel);
 		GameFrame gameFrame = new GameFrame(boardPanel, boardModel);
 
 		boardModel.addObserver(gameFrame);
-		// Erstellt das Spiel
+		
+		// Erstellt das SpielFeld
 		new BoardController(boardModel, boardPanel);
 		new GameController(boardModel, gameFrame, boardPanel);
 

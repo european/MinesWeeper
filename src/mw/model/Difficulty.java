@@ -1,7 +1,7 @@
 package mw.model;
 
 public enum Difficulty {
-	EASY, MEDIUM, HARD;
+	EINFACH, MITTEL, SCHWER, BENUTZERDEFINIERT;
 
 	public static Difficulty fromString(String name) {
 		return getEnumFromString(Difficulty.class, name);
@@ -11,15 +11,18 @@ public enum Difficulty {
 		String ret = "";
 
 		switch (this) {
-		case EASY:
-			ret = "easy";
+		case EINFACH:
+			ret = "einfach";
 			break;
-		case MEDIUM:
-			ret = "medium";
+		case MITTEL:
+			ret = "mittel";
 			break;
-		case HARD:
-			ret = "hard";
+		case SCHWER:
+			ret = "schwer";
 			break;
+		case BENUTZERDEFINIERT:
+			ret = "benutzerdefiniert";
+			break;	
 		default:
 			break;
 		}

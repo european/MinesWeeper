@@ -17,43 +17,59 @@ public class BoardPanel extends JPanel {
 	private FeldButton[][] board;
 
 	private MouseListener mouseListener;
+	private boolean rebuild = false, initBuild = true;;	
 
 	public BoardPanel(BoardModel boardModel) {
 		this.boardModel = boardModel;
-
 	}
 
 	/**
 	 * Erstellt das Spielfeld
 	 */
 	public void build() {
+		if(initBuild || rebuild){			
+			this.removeAll();
+		}
 		board = new FeldButton[boardModel.getRows()][boardModel.getCols()];
 
 		this.setLayout(new GridLayout(boardModel.getRows(), boardModel.getCols()));
 
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
-				board[y][x] = new FeldButton();
-				board[y][x].setCoords(x, y);
-				board[y][x].setPreferredSize(new Dimension(40, 28));
+				if(initBuild || rebuild) {
+					board[y][x] = new FeldButton();
+					board[y][x].setCoords(x, y);
+					this.add(board[y][x]);
+				}
+				board[y][x].setPreferredSize(new Dimension(20, 20));				
 				board[y][x].setIsMine(boardModel.isMine(y, x));
-				this.add(board[y][x]);
+				board[y][x].reset();
 			}
 		}
+		this.setEnabled(true);
+        
+//        if(initBuild)
+//        	initBuild = false;
+
+        if(rebuild) {
+        	rebuild = false;
+        	addListeners();
+        }
 	}
 
 	/**
 	 * Fügt die MouseListener hinzu
 	 * 
-	 * @param e
-	 *            MousListener
+	 * @param e MousListener
 	 */
 	public void addClickListener(MouseListener e) {
 		mouseListener = e;
 
 		addListeners();
 	}
-
+	/**
+	 * Setzt auf die Buttons den Listener
+	 */
 	private void addListeners() {
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
@@ -62,20 +78,30 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-	public void showField() {
+	/**
+	 * Öffnet alle Felder, bei denen getChecked() = true ist
+	 */
+	public void redraw() {		
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
-				if (board[y][x].getButtonStatus() == ButtonStatus.DEFAULT) {
+				if (boardModel.getChecked()[y][x]) {
 					if (board[y][x].isMine()) {
 						board[y][x].getMineExplodeIcon();
 					} else {
-						board[y][x].setText(String.valueOf(boardModel
-								.getBoard()[y][x]));
+						board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
 					}
+					board[y][x].setEnabled(false);
+					board[y][x].setButtonStatus(ButtonStatus.CLICKED);
 				}
-
 			}
-		}
+		}		
+	}
+	
+	/**
+	 * @param rebuild the rebuild to set
+	 */
+	public void setRebuild(boolean rebuild) {
+		this.rebuild = rebuild;
 	}
 
 }
