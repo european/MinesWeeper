@@ -38,7 +38,7 @@ public class BoardController {
 	 * 
 	 * @param e - <code>MouseEvent</code>
 	 */
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
 		int[] coords = new int[2];
@@ -53,7 +53,7 @@ public class BoardController {
 				boardPanel.redraw();
 				
 				int timePlayed = boardModel.getTimePlayed();
-				int loose = JOptionPane.showOptionDialog(
+				JOptionPane.showOptionDialog(
                 		null, 
                 		"Glückwunsch, Du hast Verloren! Und nur "+timePlayed+" Sekunden dafür benötigt. \n", 
                 		"Du hast Verloren!", 
@@ -71,7 +71,7 @@ public class BoardController {
 					int timePlayed = boardModel.getTimePlayed();
                 	Object[] options = {"Yeah", "Nöö!"};
 
-                    int submitScores = JOptionPane.showOptionDialog(
+                    JOptionPane.showOptionDialog(
                     		null, 
                     		"Glückwunsch, Du hast Gewonnen! Du brauchtest "+timePlayed+" Sekunden um das Spiel zu beenden. \n " +
                 				"Möchtest du deinen Highscore eintragen?", 

@@ -29,7 +29,7 @@ public class BoardModel extends Observable {
 
 	public BoardModel(Difficulty difficulty) {
 		setDifficulty(difficulty);
-		timer = new Timer(1000, new timerAction());
+		timer = new Timer(1000, new TimerAction());
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class BoardModel extends Observable {
 	 * @author niwe
 	 *
 	 */
-	class timerAction implements ActionListener {
+	class TimerAction implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			timePlayed++;

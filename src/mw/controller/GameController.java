@@ -71,8 +71,6 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			String diff = e.getActionCommand();
 			Difficulty difficulty = Difficulty.fromString(diff);
-			System.out.println(diff);
-			System.out.println(difficulty);
 			if(difficulty == Difficulty.BENUTZERDEFINIERT){				
 				showBenutzerdefiniert();
 			}else{
