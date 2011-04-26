@@ -6,7 +6,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JMenuItem;
@@ -74,11 +73,8 @@ public class GameController {
 			Difficulty difficulty = Difficulty.fromString(diff);
 			System.out.println(diff);
 			System.out.println(difficulty);
-			if(difficulty == Difficulty.BENUTZERDEFINIERT){
-				//int rows = 0, cols = 0, anzahlMinen = 0;
-				
+			if(difficulty == Difficulty.BENUTZERDEFINIERT){				
 				showBenutzerdefiniert();
-				//boardModel.setDifficultyUser(rows, cols, anzahlMinen);
 			}else{
 				// 	change the difficulty in boardModel and create a new game
 				boardModel.setDifficulty(difficulty);
@@ -98,32 +94,36 @@ public class GameController {
 		}
     }
     
-    public void showBenutzerdefiniert(){
-		// Erstellung Array vom Datentyp Object, Hinzufügen der Komponenten    
-    	
-    	//NumberFormat format = NumberFormat.getInstance();  
-    	
+    /**
+     * Erzeugt ein <code>JOptionPane</code> für die Benutzerdefinierten Einstellungen im Spiel
+     * 
+     * In die Felder können nur Zahlen eingegeben werden.
+     */
+    public void showBenutzerdefiniert(){	
     	// Es können nur Zahlen eingegeben werden
-    	JFormattedTextField hoehe = new JFormattedTextField(boardModel.getRows());
+    	final JFormattedTextField hoehe = new JFormattedTextField(boardModel.getRows());
         ((NumberFormatter)hoehe.getFormatter()).setAllowsInvalid(false);
         
-        JFormattedTextField breite = new JFormattedTextField(boardModel.getCols());
+        final JFormattedTextField breite = new JFormattedTextField(boardModel.getCols());
         ((NumberFormatter)breite.getFormatter()).setAllowsInvalid(false);
         
         JFormattedTextField minen = new JFormattedTextField(boardModel.getAnzahlMinen());
         ((NumberFormatter)minen.getFormatter()).setAllowsInvalid(false);
                   
+        final JTextField anzahl = new JTextField();
         
         Object[] message = {"Höhe", hoehe, 
                 "Breite", breite,
-                "Minen", minen};
-
+                "Minen", minen,
+                "Anzahl", anzahl};
+        
         JOptionPane pane = new JOptionPane( message, 
                                         JOptionPane.PLAIN_MESSAGE, 
                                         JOptionPane.OK_CANCEL_OPTION);        
         
        pane.createDialog(null, "Einstellungen").setVisible(true);
         
+       
                
         int value = ((Integer)pane.getValue()).intValue();
         
@@ -131,7 +131,53 @@ public class GameController {
         	int rows = Integer.valueOf(hoehe.getText()).intValue();
         	int cols = Integer.valueOf(breite.getText()).intValue();
         	int anzahlMinen = Integer.valueOf(minen.getText()).intValue();
-        	boardModel.setDifficultyUser(rows, cols, anzahlMinen);
+        	
+        	boolean error = false;
+        	
+        	// Wenn die Minen mehr oder gleich der Feldgröße sind
+        	if(anzahlMinen > (rows - 1) * (cols - 1)){
+        		error = true;
+        		// es sind zuviele Minen im Feld       		
+        		JOptionPane warningPane = new JOptionPane("Es sind mehr Minen Gewählt, als das Feld groß ist" ,
+        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        		
+        		warningPane.createDialog(null, "Warnung").setVisible(true);
+        		int value2 = ((Integer)warningPane.getValue()).intValue();
+                
+                if(value2 == JOptionPane.OK_OPTION) {
+                	showBenutzerdefiniert();
+                }        		
+        	}
+        	// Wenn die Feldgröße zu klein ist
+        	if(cols * cols <= 4){
+        		error = true;
+        		JOptionPane warningPane = new JOptionPane("Die Feldgröße ist zu klein" ,
+        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        		
+        		warningPane.createDialog(null, "Warnung").setVisible(true);
+        		int value2 = ((Integer)warningPane.getValue()).intValue();
+                
+                if(value2 == JOptionPane.OK_OPTION) {
+                	showBenutzerdefiniert();
+                }
+        	}
+        	// Wenn die Feldgröße zu groß ist
+        	if(cols * rows > 30*24){
+        		error = true;
+        		// Das Feld ist zu Groß max 30*24
+        		JOptionPane warningPane = new JOptionPane("Die Feldgröße ist zu groß max 50 * 50" ,
+        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        		
+        		warningPane.createDialog(null, "Warnung").setVisible(true);
+        		int value2 = ((Integer)warningPane.getValue()).intValue();
+                
+                if(value2 == JOptionPane.OK_OPTION) {
+                	showBenutzerdefiniert();
+                }
+        	}
+        	if(error != true){
+        		boardModel.setDifficultyUser(rows, cols, anzahlMinen);
+        	}
         }        
 	}
     

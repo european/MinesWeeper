@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import mw.model.BoardModel;
@@ -31,21 +30,12 @@ import mw.model.Difficulty;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame implements Observer {
 
-	// private MWModel m_model;
-
 	private JLabel lZeit;
 	private JLabel lRestMinen;
 
 	private JProgressBar progressBar;
 
-	// private JPanel contentPanel;
 	private JPanel mainPanel;
-	// private JPanel gamePanel;
-
-	// private FeldButton[][] board;
-
-	// private int rows = 8;
-	// private int cols = 8;
 
 	private BoardPanel boardPanel;
 	private BoardModel boardModel;
@@ -67,8 +57,7 @@ public class GameFrame extends JFrame implements Observer {
 
 		this.setTitle("MinesWeeper v3");
 		this.setVisible(true);
-		this.setResizable(false);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(true);
 
 		build();
 	}
@@ -144,7 +133,7 @@ public class GameFrame extends JFrame implements Observer {
         
         
         
-        // select the appropriate diff radio
+        // Wahl der Schwierigkeit durch Radio
         Difficulty diff = boardModel.getDifficulty(); 
         
         if(diff == Difficulty.EINFACH)
@@ -238,7 +227,7 @@ public class GameFrame extends JFrame implements Observer {
 	public JMenuItem getMnuHelpInfo() { return mnuHelpInfo; }
 
 	public void showAbout() {
-		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	

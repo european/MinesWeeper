@@ -1,15 +1,21 @@
 package mw.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 import mw.model.ButtonStatus;
 
 @SuppressWarnings("serial")
-public class FeldButton extends JToggleButton {
+public class FeldButton extends JButton {
+	private Icon normIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/Feldnorm.png"));
+	private Icon disabledIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/Feldoffen.png"));
 	private Icon mineIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/mine.png"));
 	private Icon mineExplodeIcon = new ImageIcon(FeldButton.class.getResource("/mw/images/mineExplode.png"));
 
@@ -29,9 +35,17 @@ public class FeldButton extends JToggleButton {
 	 */
 	public FeldButton() {
 		coords = new int[2];
+		setIcon(normIcon);
 		setButtonStatus(getDefault());
-		setFont(new Font(getText(), Font.BOLD, 2));
-		setVisible(true);
+		setFont(new Font(getText(), Font.PLAIN, 10));
+		setPreferredSize(new Dimension(18, 18));
+		setForeground(new Color(255,0,0));
+		setVisible(true);		
+		setVerticalTextPosition(SwingConstants.CENTER);
+	    setHorizontalTextPosition(SwingConstants.CENTER);
+	    setMargin(new Insets(0,0,0,0));
+	    setSize(18, 18);
+	    setFocusPainted(false);
 	}
 	/**
 	 * Zum Resseten des Buttons
@@ -50,18 +64,6 @@ public class FeldButton extends JToggleButton {
 	private ButtonStatus getFlagged() {
 		return ButtonStatus.FLAG;
 	}
-
-//	private ButtonStatus getClicked() {
-//		return ButtonStatus.CLICKED;
-//	}
-//
-//	private ButtonStatus getMine() {
-//		return ButtonStatus.MINE;
-//	}
-//	
-//	private ButtonStatus getMineExplode() {
-//		return ButtonStatus.MINE_EXPLODED;
-//	}
 
 	private ButtonStatus getDefault() {
 		return ButtonStatus.DEFAULT;
@@ -90,7 +92,7 @@ public class FeldButton extends JToggleButton {
 	public void toggleFlagButton() {
 		if (isFlagged()) {
 			setButtonStatus(getDefault());
-			this.setIcon(null);
+			this.setIcon(normIcon);
 			this.setEnabled(true);			
 		} else {
 			setButtonStatus(getFlagged());
@@ -136,5 +138,12 @@ public class FeldButton extends JToggleButton {
 	 */
 	public void getMineExplodeIcon() {
 		this.setIcon(mineExplodeIcon);
-	}	
+	}
+	
+	/**
+	 * @return the disabledIcon
+	 */
+	public void getFieldDisabledIcon() {
+		this.setDisabledIcon(disabledIcon);
+	}		
 }

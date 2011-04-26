@@ -1,6 +1,5 @@
 package mw.view;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 
@@ -41,16 +40,13 @@ public class BoardPanel extends JPanel {
 					board[y][x].setCoords(x, y);
 					this.add(board[y][x]);
 				}
-				board[y][x].setPreferredSize(new Dimension(20, 20));				
+//				board[y][x].setPreferredSize(new Dimension(40, 25));				
 				board[y][x].setIsMine(boardModel.isMine(y, x));
 				board[y][x].reset();
 			}
 		}
 		this.setEnabled(true);
         
-//        if(initBuild)
-//        	initBuild = false;
-
         if(rebuild) {
         	rebuild = false;
         	addListeners();
@@ -84,12 +80,13 @@ public class BoardPanel extends JPanel {
 	public void redraw() {		
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
-				if (boardModel.getChecked()[y][x]) {
+				if (boardModel.getChecked()[y][x]) {					
 					if (board[y][x].isMine()) {
 						board[y][x].getMineExplodeIcon();
-					} else {
+					} else {					
 						board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
-					}
+						board[y][x].getFieldDisabledIcon();
+					}					
 					board[y][x].setEnabled(false);
 					board[y][x].setButtonStatus(ButtonStatus.CLICKED);
 				}

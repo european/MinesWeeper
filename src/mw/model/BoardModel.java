@@ -112,25 +112,24 @@ public class BoardModel extends Observable {
 	private void openFieldMore(int startY, int startX){
 		for (int y = startY - 1; y <= startY + 1; y++) {
             for (int x = startX - 1; x <= startX + 1; x++) {
-                // x or y = start coords?
+                // x oder y = start coords?
                 if(y == startY && x == startX)
                     continue;
                 
-                // out of bounds?
+                // Außerhalb des Bereiches?
                 if(x < 0 || x > getCols() - 1 || y < 0 || y > getRows() - 1)
                     continue;
                 
-                // field already checked?
+                // Feld schon gechecked?
                 if(checked[y][x])
                     continue;
 
                 checked[y][x] = true;
                 
-                // call this function (recursively) when value is "empty"
+                // Wenn das Feld leer ist rufe die Funktion nocheinmal auf
                 if(board[y][x] == EMPTYVALUE) 
                 	openFieldMore(y, x);
                 
-                //setButtonStatus(buttonStatus.CLICKED);
                 feldZaehler++;
             }
         }		
@@ -219,8 +218,8 @@ public class BoardModel extends Observable {
 			setRestMinen(40);
 			break;
 		case SCHWER:
-			setRows(25);
-			setCols(25);
+			setRows(30);
+			setCols(16);
 			setAnzahlMinen(99);
 			setRestMinen(99);
 			break;
