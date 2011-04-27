@@ -84,18 +84,23 @@ public class BoardPanel extends JPanel {
 				if (boardModel.getChecked()[y][x]) {
 					if (board[y][x].isMine() && board[y][x].getButtonStatus() != ButtonStatus.MINE_EXPLODED) {
 						board[y][x].getMineIcon();
+
+					}
 					} else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED) {
+
 						board[y][x].getMineExplodeIcon();
+
 					} else {
 						// Damit 0 nicht angezeigt wird
 						if (boardModel.getBoard()[y][x] != 0) {
 							board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
 						}
+
 						board[y][x].getFieldDisabledIcon();
 					}
 					board[y][x].setEnabled(false);
 					board[y][x].setButtonStatus(ButtonStatus.CLICKED);
-				}
+				
 			}
 		}
 	}
