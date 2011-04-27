@@ -57,7 +57,7 @@ public class GameFrame extends JFrame implements Observer {
 
 		this.setTitle("MinesWeeper v3");
 		this.setVisible(true);
-		this.setResizable(true);
+		this.setResizable(false);
 
 		build();
 	}

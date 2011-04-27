@@ -80,10 +80,14 @@ public class BoardPanel extends JPanel {
 	public void redraw() {		
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
-				if (boardModel.getChecked()[y][x]) {					
-					if (board[y][x].isMine()) {
+				if (boardModel.getChecked()[y][x]) {
+					if (board[y][x].isMine() && board[y][x].getButtonStatus() != ButtonStatus.MINE_EXPLODED) {
+						board[y][x].getMineIcon();
+					}
+					else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED){
 						board[y][x].getMineExplodeIcon();
-					} else {					
+					}			
+					else {					
 						board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
 						board[y][x].getFieldDisabledIcon();
 					}					

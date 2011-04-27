@@ -1,8 +1,7 @@
 package mw.controller;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JOptionPane;
 
 import mw.model.BoardModel;
@@ -47,6 +46,8 @@ public class BoardController {
 
 		if (feldButton.getButtonStatus() == ButtonStatus.DEFAULT || feldButton.getButtonStatus() == ButtonStatus.FLAG) {
 			if (feldButton.isMine()) {
+				
+				feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
 				feldButton.getMineExplodeIcon();
 				
 				boardModel.endGame();
@@ -90,12 +91,7 @@ public class BoardController {
 	/**
 	 * MouseListener für die Felder (rechts klick/ links klick)
 	 */
-	private class ToggleButtonListner implements MouseListener {
-		
-		public void mouseClicked(MouseEvent e) {/* tue nichts */}
-		public void mouseEntered(MouseEvent e) {/* tue nichts */}
-		public void mouseExited(MouseEvent e) {/* tue nichts */}
-
+	private class ToggleButtonListner extends MouseAdapter {		
 		// Wenn die Maus gedrück ist, dann
 		public void mousePressed(MouseEvent e) {
 			FeldButton feldButton = (FeldButton) e.getSource();
@@ -123,8 +119,6 @@ public class BoardController {
 				}
 			}
 		}
-
-		public void mouseReleased(MouseEvent e) {/* tue nichts */}
 	}
 
 }

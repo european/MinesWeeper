@@ -1,28 +1,25 @@
 package mw.model;
 
 public enum Difficulty {
-	EINFACH, MITTEL, SCHWER, BENUTZERDEFINIERT;
+	EINFACH(9, 9, 10), MITTEL(16, 16, 40), SCHWER(30, 16, 99), BENUTZERDEFINIERT(9, 9, 10);
+
+	int rows;
+	int cols;
+	int anzahlMinen;
+	int anzahlRestMinen;
+	
+	private Difficulty(int rows, int cols, int anzahlMinen) {
+		this.rows = rows;
+		this.cols = cols;
+		this.anzahlMinen = anzahlMinen;
+		this.anzahlRestMinen = anzahlMinen;
+	}
 
 	
 	public static Difficulty fromString(String name) {
-		return getEnumFromString(Difficulty.class, name);
-	}
-	
-	/**
-	 * A common method for all enums since they can't have another base class
-	 * 
-	 * @param <T>
-	 *            Enum type
-	 * @param c
-	 *            enum type. All enums must be all caps.
-	 * @param string
-	 *            case insensitive
-	 * @return corresponding enum, or null
-	 */
-	public static <T extends Enum<T>> T getEnumFromString(Class<T> c, String string) {
-		if (c != null && string != null) {
+		if (Difficulty.class != null && name != null) {
 			try {
-				return Enum.valueOf(c, string.trim().toUpperCase());
+				return Enum.valueOf(Difficulty.class, name.trim().toUpperCase());
 			} catch (IllegalArgumentException ex) {
 			}
 		}
@@ -30,4 +27,33 @@ public enum Difficulty {
 		return null;
 	}
 
+	/**
+	 * @return the rows
+	 */
+	public int getRows() {
+		return rows;
+	}
+
+	/**
+	 * @return the cols
+	 */
+	public int getCols() {
+		return cols;
+	}
+
+	/**
+	 * @return the anzahlMinen
+	 */
+	public int getAnzahlMinen() {
+		return anzahlMinen;
+	}
+
+	/**
+	 * @return the anzahlRestMinen
+	 */
+	public int getAnzahlRestMinen() {
+		return anzahlRestMinen;
+	}
+
+	
 }

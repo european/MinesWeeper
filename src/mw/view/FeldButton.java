@@ -35,16 +35,28 @@ public class FeldButton extends JButton {
 	 */
 	public FeldButton() {
 		coords = new int[2];
+		
+		// StandartIcon und Status
 		setIcon(normIcon);
 		setButtonStatus(getDefault());
+		
+		// Schrift Größe
 		setFont(new Font(getText(), Font.PLAIN, 10));
-		setPreferredSize(new Dimension(18, 18));
+		// Schrift Farbe
 		setForeground(new Color(255,0,0));
-		setVisible(true);		
+		
+		// Button größe
+		setPreferredSize(new Dimension(18, 18));
+		setSize(18, 18);
+		
+		// Ausrichtung der Textposition (Mittig)
 		setVerticalTextPosition(SwingConstants.CENTER);
 	    setHorizontalTextPosition(SwingConstants.CENTER);
-	    setMargin(new Insets(0,0,0,0));
-	    setSize(18, 18);
+	    
+	    // Entfernt den Standart Margin
+	    setMargin(new Insets(0,0,0,0));		
+		
+	    // Fokus auf das Aktuelle Feld
 	    setFocusPainted(false);
 	}
 	/**
@@ -129,15 +141,15 @@ public class FeldButton extends JButton {
 	/**
 	 * @return the mineIcon
 	 */
-	public void setMineIcon() {
-		this.setIcon(mineIcon);
+	public void getMineIcon() {
+		this.setDisabledIcon(mineIcon);
 	}
 
 	/**
 	 * @return the mineExplodeIcon
 	 */
 	public void getMineExplodeIcon() {
-		this.setIcon(mineExplodeIcon);
+		this.setDisabledIcon(mineExplodeIcon);
 	}
 	
 	/**

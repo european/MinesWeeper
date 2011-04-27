@@ -22,9 +22,7 @@ public class BoardModel extends Observable {
 
 	private int[][] board;
 	private boolean[][] checked;
-	
-//	private ButtonStatus buttonStatus;
-//
+
 	private Difficulty difficulty;	
 
 	public BoardModel(Difficulty difficulty) {
@@ -50,15 +48,15 @@ public class BoardModel extends Observable {
 		int x = 0, y = 0;
 
 		while (counter <= getAnzahlMinen()) {
-			x = (int) (Math.random() * getRows());
-			y = (int) (Math.random() * getCols());
+			y = (int) (Math.random() * getRows());
+			x = (int) (Math.random() * getCols());
 
-			if (board[x][y] != MINEVALUE) {
+			if (board[y][x] != MINEVALUE) {
 				// Add Mines
-				board[x][y] = MINEVALUE;
-
+				board[y][x] = MINEVALUE;
+				
 				// Add Numbers
-				addHintNumbers(x, y);
+				addHintNumbers(y, x);
 
 				counter++;
 			}
@@ -151,12 +149,12 @@ public class BoardModel extends Observable {
 	 * @param x
 	 * @param y
 	 */
-	private void addHintNumbers(int x, int y) {
-		for (int i2 = y - 1; i2 <= y + 1; i2++) {
-			for (int i1 = x - 1; i1 <= x + 1; i1++) {
-				if (i1 < 0 || i1 >= getCols() || i2 < 0 || i2 >= getRows() || board[i1][i2] == MINEVALUE)
+	private void addHintNumbers(int y, int x) {
+		for (int y2 = y - 1; y2 <= y + 1; y2++) {
+			for (int x2 = x - 1; x2 <= x + 1; x2++) {
+				if (x2 < 0 || x2 >= getCols() || y2 < 0 || y2 >= getRows() || board[y2][x2] == MINEVALUE)
 					continue;
-				board[i1][i2]++;
+				board[y2][x2]++;
 			}
 		}
 	}
@@ -209,30 +207,35 @@ public class BoardModel extends Observable {
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
-
-		switch (difficulty) {
-		case MITTEL:
-			setRows(16);
-			setCols(16);
-			setAnzahlMinen(40);
-			setRestMinen(40);
-			break;
-		case SCHWER:
-			setRows(30);
-			setCols(16);
-			setAnzahlMinen(99);
-			setRestMinen(99);
-			break;
-		case EINFACH:
-			setRows(9);
-			setCols(9);
-			setAnzahlMinen(10);
-			setRestMinen(10);
-			break;
-		default:
-			System.out.println("Wrong difficultysetting");
-			break;
-		}
+		
+		setCols(difficulty.getCols());
+		setRows(difficulty.getRows());
+		setAnzahlMinen(difficulty.getAnzahlMinen());
+		setRestMinen(difficulty.getAnzahlRestMinen());
+//
+//		switch (difficulty) {
+//		case MITTEL:
+//			setRows(16);
+//			setCols(16);
+//			setAnzahlMinen(40);
+//			setRestMinen(40);
+//			break;
+//		case SCHWER:
+//			setRows(30);
+//			setCols(16);
+//			setAnzahlMinen(99);
+//			setRestMinen(99);
+//			break;
+//		case EINFACH:
+//			setRows(9);
+//			setCols(9);
+//			setAnzahlMinen(10);
+//			setRestMinen(10);
+//			break;
+//		default:
+//			System.out.println("Wrong difficultysetting");
+//			break;
+//		}
 	}
 	
 	public void setDifficultyUser(int rows, int cols, int anzahlMinen){

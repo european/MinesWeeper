@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JMenuItem;
@@ -35,14 +35,12 @@ public class GameController {
         this.gameFrame.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
     }
     
-    public GameController() throws Exception {
-    	throw new Exception("GameController needs instances of: BoardModel, GameFrame and BoardPanel to function");
+    @SuppressWarnings("unused")
+	private GameController() {
+    	
     }
 
-    class NewSpielButtonListner implements MouseListener {
-        public void mouseClicked(MouseEvent e) {}
-        public void mouseEntered(MouseEvent e) {}
-        public void mouseExited(MouseEvent e) {}
+    class NewSpielButtonListner extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
         	if(e.getSource() instanceof JMenuItem) {
         		JMenuItem source = (JMenuItem) e.getSource();
@@ -136,48 +134,53 @@ public class GameController {
         	if(anzahlMinen > (rows - 1) * (cols - 1)){
         		error = true;
         		// es sind zuviele Minen im Feld       		
-        		JOptionPane warningPane = new JOptionPane("Es sind mehr Minen Gewählt, als das Feld groß ist" ,
-        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
-        		
-        		warningPane.createDialog(null, "Warnung").setVisible(true);
-        		int value2 = ((Integer)warningPane.getValue()).intValue();
-                
-                if(value2 == JOptionPane.OK_OPTION) {
-                	showBenutzerdefiniert();
-                }        		
+        		showWarningMessage(1);     		
         	}
         	// Wenn die Feldgröße zu klein ist
-        	if(cols * cols <= 4){
+        	if(cols * cols <= 3*3){
         		error = true;
-        		JOptionPane warningPane = new JOptionPane("Die Feldgröße ist zu klein" ,
-        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
-        		
-        		warningPane.createDialog(null, "Warnung").setVisible(true);
-        		int value2 = ((Integer)warningPane.getValue()).intValue();
-                
-                if(value2 == JOptionPane.OK_OPTION) {
-                	showBenutzerdefiniert();
-                }
+        		showWarningMessage(2);    
         	}
         	// Wenn die Feldgröße zu groß ist
         	if(cols * rows > 30*24){
         		error = true;
         		// Das Feld ist zu Groß max 30*24
-        		JOptionPane warningPane = new JOptionPane("Die Feldgröße ist zu groß max 50 * 50" ,
-        				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
-        		
-        		warningPane.createDialog(null, "Warnung").setVisible(true);
-        		int value2 = ((Integer)warningPane.getValue()).intValue();
-                
-                if(value2 == JOptionPane.OK_OPTION) {
-                	showBenutzerdefiniert();
-                }
+        		showWarningMessage(3);    
         	}
         	if(error != true){
         		boardModel.setDifficultyUser(rows, cols, anzahlMinen);
         	}
         }        
 	}
+    
+    /**
+     * 1 = zuviele Minen <br>
+     * 2 = Feld zu klein <br>
+     * 3 = Feld zu groß <br>
+     * @param typ
+     */
+    private void showWarningMessage(int typ){
+    	String message = null;
+    	if(typ == 1){
+    		message = "Es sind mehr Minen Gewählt, als das Feld groß ist.";
+    	}
+    	if(typ == 2){
+    		message = "Die Feldgröße ist zu klein min 3x3.";
+    	}
+    	if(typ == 3){
+    		message = "Die Feldgröße ist zu groß max 30 * 24.";
+    	}
+    	
+    	JOptionPane warningPane = new JOptionPane(message ,
+				JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+    	
+    	warningPane.createDialog(null, "Warnung").setVisible(true);
+		int value2 = ((Integer)warningPane.getValue()).intValue();
+        
+        if(value2 == JOptionPane.OK_OPTION) {
+        	showBenutzerdefiniert();
+        }
+    }
     
 	
 	
