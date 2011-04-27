@@ -39,13 +39,13 @@ public class GameFrame extends JFrame implements Observer {
 
 	private BoardPanel boardPanel;
 	private BoardModel boardModel;
-	
+
 	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
-	
+
 	private ButtonGroup diffGroup;
-    private JRadioButtonMenuItem mnuSpeilDiffEasy;
-    private JRadioButtonMenuItem mnuSpielDiffMedium;
-    private JRadioButtonMenuItem mnuSpielDiffHard;    
+	private JRadioButtonMenuItem mnuSpeilDiffEasy;
+	private JRadioButtonMenuItem mnuSpielDiffMedium;
+	private JRadioButtonMenuItem mnuSpielDiffHard;
 
 	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
 		this.boardPanel = boardPanel;
@@ -103,7 +103,7 @@ public class GameFrame extends JFrame implements Observer {
 	 */
 	public JMenuBar getJMenuBar() {
 		JMenuBar mb = new JMenuBar();
-		JMenu mSpiel, mExtra, mHelp;		
+		JMenu mSpiel, mExtra, mHelp;
 
 		// Datei
 		mSpiel = new JMenu("Spiel");
@@ -116,42 +116,40 @@ public class GameFrame extends JFrame implements Observer {
 		mnuSpielBeenden = new JMenuItem("Beenden");
 		mnuSpielBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 
-		mSpiel.add(mnuSpielNeu);		
-		
-		mSpiel.addSeparator();
-        
-        // diff menu
-        diffGroup = new ButtonGroup();
+		mSpiel.add(mnuSpielNeu);
 
-        mnuSpeilDiffEasy = new JRadioButtonMenuItem("Einfach");
-        mnuSpielDiffMedium = new JRadioButtonMenuItem("Mittel");
-        mnuSpielDiffHard = new JRadioButtonMenuItem("Schwer");
-        
-        diffGroup.add(mnuSpeilDiffEasy);
-        diffGroup.add(mnuSpielDiffMedium);
-        diffGroup.add(mnuSpielDiffHard);
-        
-        
-        
-        // Wahl der Schwierigkeit durch Radio
-        Difficulty diff = boardModel.getDifficulty(); 
-        
-        if(diff == Difficulty.EINFACH)
-        	mnuSpeilDiffEasy.setSelected(true);
-        else if(diff == Difficulty.MITTEL)
-        	mnuSpielDiffMedium.setSelected(true);
-        else if(diff == Difficulty.SCHWER)
-        	mnuSpielDiffHard.setSelected(true);
-        
-        mSpiel.add(mnuSpeilDiffEasy);
-        mSpiel.add(mnuSpielDiffMedium);
-        mSpiel.add(mnuSpielDiffHard);
-        
-        mSpiel.add(mnuSpielDiffUser);
-        
-        mSpiel.addSeparator();
-        mSpiel.add(mnuSpielBeenden);			
-		
+		mSpiel.addSeparator();
+
+		// diff menu
+		diffGroup = new ButtonGroup();
+
+		mnuSpeilDiffEasy = new JRadioButtonMenuItem("Einfach");
+		mnuSpielDiffMedium = new JRadioButtonMenuItem("Mittel");
+		mnuSpielDiffHard = new JRadioButtonMenuItem("Schwer");
+
+		diffGroup.add(mnuSpeilDiffEasy);
+		diffGroup.add(mnuSpielDiffMedium);
+		diffGroup.add(mnuSpielDiffHard);
+
+		// Wahl der Schwierigkeit durch Radio
+		Difficulty diff = boardModel.getDifficulty();
+
+		if (diff == Difficulty.EINFACH)
+			mnuSpeilDiffEasy.setSelected(true);
+		else if (diff == Difficulty.MITTEL)
+			mnuSpielDiffMedium.setSelected(true);
+		else if (diff == Difficulty.SCHWER)
+			mnuSpielDiffHard.setSelected(true);
+
+		mSpiel.add(mnuSpeilDiffEasy);
+		mSpiel.add(mnuSpielDiffMedium);
+		mSpiel.add(mnuSpielDiffHard);
+
+		mSpiel.add(mnuSpielDiffUser);
+
+		mSpiel.addSeparator();
+		mSpiel.add(mnuSpielBeenden);
+
 		mb.add(mSpiel);
 
 		// Extras
@@ -193,28 +191,31 @@ public class GameFrame extends JFrame implements Observer {
 			progressBar.setValue(boardModel.getFeldZaehler());
 		}
 	}
+
 	public void resetTimePlayed() {
 		lZeit.setText(String.valueOf(0));
-    }
-    
-	public void resetProgressBar(){			
+	}
+
+	public void resetProgressBar() {
 		progressBar.setValue(0);
 		progressBar.setMaximum(boardModel.getCols() * boardModel.getRows());
 	}
-    /**
-     * 
-     * @param e MouseListener
-     */
-    public void addClickListener(MouseListener e) {
-    	mnuSpielNeu.addMouseListener(e);
-    	mnuHelpInfo.addMouseListener(e);
-    	
-    }
 
-    /**
-     * 
-     * @param diffChoiceListener
-     */
+	/**
+	 * 
+	 * @param e
+	 *            MouseListener
+	 */
+	public void addClickListener(MouseListener e) {
+		mnuSpielNeu.addMouseListener(e);
+		mnuHelpInfo.addMouseListener(e);
+
+	}
+
+	/**
+	 * 
+	 * @param diffChoiceListener
+	 */
 	public void addDifficultyListener(ActionListener diffChoiceListener) {
 		mnuSpeilDiffEasy.addActionListener(diffChoiceListener);
 		mnuSpielDiffMedium.addActionListener(diffChoiceListener);
@@ -222,14 +223,16 @@ public class GameFrame extends JFrame implements Observer {
 		mnuSpielDiffUser.addActionListener(diffChoiceListener);
 	}
 
-	public JMenuItem getMnuSpielNeu() { return mnuSpielNeu;	}
+	public JMenuItem getMnuSpielNeu() {
+		return mnuSpielNeu;
+	}
 
-	public JMenuItem getMnuHelpInfo() { return mnuHelpInfo; }
+	public JMenuItem getMnuHelpInfo() {
+		return mnuHelpInfo;
+	}
 
 	public void showAbout() {
 		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	
 
 }

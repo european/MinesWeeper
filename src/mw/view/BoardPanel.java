@@ -16,7 +16,7 @@ public class BoardPanel extends JPanel {
 	private FeldButton[][] board;
 
 	private MouseListener mouseListener;
-	private boolean rebuild = false, initBuild = true;;	
+	private boolean rebuild = false, initBuild = true;;
 
 	public BoardPanel(BoardModel boardModel) {
 		this.boardModel = boardModel;
@@ -26,7 +26,7 @@ public class BoardPanel extends JPanel {
 	 * Erstellt das Spielfeld
 	 */
 	public void build() {
-		if(initBuild || rebuild){			
+		if (initBuild || rebuild) {
 			this.removeAll();
 		}
 		board = new FeldButton[boardModel.getRows()][boardModel.getCols()];
@@ -35,34 +35,35 @@ public class BoardPanel extends JPanel {
 
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
-				if(initBuild || rebuild) {
+				if (initBuild || rebuild) {
 					board[y][x] = new FeldButton();
 					board[y][x].setCoords(x, y);
 					this.add(board[y][x]);
 				}
-//				board[y][x].setPreferredSize(new Dimension(40, 25));				
 				board[y][x].setIsMine(boardModel.isMine(y, x));
 				board[y][x].reset();
 			}
 		}
 		this.setEnabled(true);
-        
-        if(rebuild) {
-        	rebuild = false;
-        	addListeners();
-        }
+
+		if (rebuild) {
+			rebuild = false;
+			addListeners();
+		}
 	}
 
 	/**
 	 * Fügt die MouseListener hinzu
 	 * 
-	 * @param e MousListener
+	 * @param e
+	 *            MousListener
 	 */
 	public void addClickListener(MouseListener e) {
 		mouseListener = e;
 
 		addListeners();
 	}
+
 	/**
 	 * Setzt auf die Buttons den Listener
 	 */
@@ -77,29 +78,31 @@ public class BoardPanel extends JPanel {
 	/**
 	 * Öffnet alle Felder, bei denen getChecked() = true ist
 	 */
-	public void redraw() {		
+	public void redraw() {
 		for (int y = 0; y < boardModel.getRows(); y++) {
 			for (int x = 0; x < boardModel.getCols(); x++) {
 				if (boardModel.getChecked()[y][x]) {
 					if (board[y][x].isMine() && board[y][x].getButtonStatus() != ButtonStatus.MINE_EXPLODED) {
 						board[y][x].getMineIcon();
-					}
-					else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED){
+					} else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED) {
 						board[y][x].getMineExplodeIcon();
-					}			
-					else {					
-						board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
+					} else {
+						// Damit 0 nicht angezeigt wird
+						if (boardModel.getBoard()[y][x] != 0) {
+							board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
+						}
 						board[y][x].getFieldDisabledIcon();
-					}					
+					}
 					board[y][x].setEnabled(false);
 					board[y][x].setButtonStatus(ButtonStatus.CLICKED);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	/**
-	 * @param rebuild the rebuild to set
+	 * @param rebuild
+	 *            the rebuild to set
 	 */
 	public void setRebuild(boolean rebuild) {
 		this.rebuild = rebuild;

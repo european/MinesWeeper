@@ -7,15 +7,18 @@ public enum Difficulty {
 	int cols;
 	int anzahlMinen;
 	int anzahlRestMinen;
-	
+
 	private Difficulty(int rows, int cols, int anzahlMinen) {
 		this.rows = rows;
 		this.cols = cols;
 		this.anzahlMinen = anzahlMinen;
 		this.anzahlRestMinen = anzahlMinen;
 	}
-
-	
+	/**
+	 * Anhand des String wird der Enum Wert ermittelt und zurück gegeben
+	 * @param name
+	 * @return Enum
+	 */
 	public static Difficulty fromString(String name) {
 		if (Difficulty.class != null && name != null) {
 			try {
@@ -55,5 +58,4 @@ public enum Difficulty {
 		return anzahlRestMinen;
 	}
 
-	
 }
