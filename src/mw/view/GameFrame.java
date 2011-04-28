@@ -28,7 +28,7 @@ import mw.model.BoardModel;
 import mw.model.Difficulty;
 
 @SuppressWarnings("serial")
-public class GameFrame extends JFrame implements Observer {
+public class GameFrame extends JFrame implements Observer, IGameFrame {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
@@ -58,6 +58,7 @@ public class GameFrame extends JFrame implements Observer {
 		this.setTitle("MinesWeeper v3");
 		this.setVisible(true);
 		this.setResizable(false);
+		this.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
 
 		build();
 	}
@@ -191,12 +192,17 @@ public class GameFrame extends JFrame implements Observer {
 			progressBar.setValue(boardModel.getFeldZaehler());
 		}
 	}
+	
+	public void reset(){
+		resetTimePlayed();
+		resetProgressBar();
+	}
 
-	public void resetTimePlayed() {
+	private void resetTimePlayed() {
 		lZeit.setText(String.valueOf(0));
 	}
 
-	public void resetProgressBar() {
+	private void resetProgressBar() {
 		progressBar.setValue(0);
 		progressBar.setMaximum(boardModel.getCols() * boardModel.getRows());
 	}

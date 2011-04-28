@@ -6,7 +6,7 @@ import java.util.Observable;
 
 import javax.swing.Timer;
 
-public class BoardModel extends Observable {
+public class BoardModel extends Observable implements IBoardModel {
 
 	private int rows;
 	private int cols;
@@ -25,8 +25,12 @@ public class BoardModel extends Observable {
 
 	private Difficulty difficulty;
 
-	public BoardModel(Difficulty difficulty) {
-		setDifficulty(difficulty);
+	public BoardModel() {
+		Difficulty diff = null;
+		if(diff == null){
+			diff = Difficulty.EINFACH;
+		}
+		setDifficulty(diff);
 		timer = new Timer(1000, new TimerAction());
 	}
 

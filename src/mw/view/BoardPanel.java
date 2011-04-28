@@ -2,6 +2,8 @@ package mw.view;
 
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
@@ -9,7 +11,7 @@ import mw.model.BoardModel;
 import mw.model.ButtonStatus;
 
 @SuppressWarnings("serial")
-public class BoardPanel extends JPanel {
+public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 
 	private BoardModel boardModel;
 
@@ -21,6 +23,8 @@ public class BoardPanel extends JPanel {
 	public BoardPanel(BoardModel boardModel) {
 		this.boardModel = boardModel;
 	}
+	
+	private int rows, cols;
 
 	/**
 	 * Erstellt das Spielfeld
@@ -106,6 +110,42 @@ public class BoardPanel extends JPanel {
 	 */
 	public void setRebuild(boolean rebuild) {
 		this.rebuild = rebuild;
+	}
+
+	@Override
+	public void update(Observable obs, Object arg) {
+		if (obs == boardModel) {
+			setRows(boardModel.getRows());
+			setCols(boardModel.getCols());
+		}		
+	}
+
+	/**
+	 * @param rows the rows to set
+	 */
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	/**
+	 * @return the rows
+	 */
+	public int getRows() {
+		return rows;
+	}
+
+	/**
+	 * @param cols the cols to set
+	 */
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+
+	/**
+	 * @return the cols
+	 */
+	public int getCols() {
+		return cols;
 	}
 
 }

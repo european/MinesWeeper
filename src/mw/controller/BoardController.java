@@ -6,13 +6,15 @@ import javax.swing.JOptionPane;
 
 import mw.model.BoardModel;
 import mw.model.ButtonStatus;
+import mw.model.IBoardModel;
 import mw.view.BoardPanel;
 import mw.view.FeldButton;
+import mw.view.IBoardPanel;
 
 public class BoardController {
 
-	private BoardModel boardModel;
-	private BoardPanel boardPanel;
+	private IBoardModel boardModel;
+	private IBoardPanel boardPanel;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -37,7 +39,6 @@ public class BoardController {
 	 * 
 	 * @param e - <code>MouseEvent</code>
 	 */
-//	@SuppressWarnings("unused")
 	private void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
 		int[] coords = new int[2];

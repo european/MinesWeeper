@@ -15,24 +15,27 @@ import javax.swing.text.NumberFormatter;
 
 import mw.model.BoardModel;
 import mw.model.Difficulty;
+import mw.model.IBoardModel;
 import mw.view.BoardPanel;
 import mw.view.GameFrame;
+import mw.view.IBoardPanel;
+import mw.view.IGameFrame;
 
 public class GameController {
 
-	private BoardModel boardModel;
-	private BoardPanel boardPanel;
-	private GameFrame gameFrame;
+	private IBoardModel boardModel;
+	private IBoardPanel boardPanel;
+	private IGameFrame gameFrame;
+	private BoardController boardController;
 	
 	public GameController(BoardModel boardModel, GameFrame gameFrame, BoardPanel boardPanel) {
         this.boardModel = boardModel;
-        this.gameFrame = gameFrame;
+        this.gameFrame =  gameFrame;
         this.boardPanel = boardPanel;
 
         // listen for mouse clicks
         this.gameFrame.addClickListener(new NewSpielButtonListner());
         this.gameFrame.addDifficultyListener(new DiffChoiceListener());
-        this.gameFrame.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
     }
     
     @SuppressWarnings("unused")
@@ -46,13 +49,7 @@ public class GameController {
         		JMenuItem source = (JMenuItem) e.getSource();
         		
         		if(source == gameFrame.getMnuSpielNeu()) {                    
-                    boardModel.newGame();
-                    boardPanel.setRebuild(true);
-                    boardPanel.build();
-                    gameFrame.resetTimePlayed();
-                    gameFrame.resetProgressBar();
-                    gameFrame.repaint();
-            		gameFrame.validate();
+        			newGame();
         		}
         		else if(source == gameFrame.getMnuHelpInfo()) {
         			gameFrame.showAbout();
@@ -75,19 +72,22 @@ public class GameController {
 				// 	change the difficulty in boardModel and create a new game
 				boardModel.setDifficulty(difficulty);
 			}
-            boardModel.newGame();
-			// rebuild the gamefield with MineButtons
-			boardPanel.setRebuild(true);
-            boardPanel.build();
-            
-            // update the parent gameFrame with new dimensionx
-            gameFrame.resetTimePlayed();
-            gameFrame.resetProgressBar();
-            gameFrame.setFrameLocation();
-            gameFrame.pack();
-    		gameFrame.repaint();
-    		gameFrame.validate();
+			newGame();
 		}
+    }
+    
+    public void newGame(){
+    	boardModel.newGame();
+		// rebuild the gamefield with MineButtons
+		boardPanel.setRebuild(true);
+        boardPanel.build();
+        
+        // update the parent gameFrame with new dimensionx
+        gameFrame.reset();
+        gameFrame.setFrameLocation();
+        gameFrame.pack();
+		gameFrame.repaint();
+		gameFrame.validate();
     }
     
     /**
