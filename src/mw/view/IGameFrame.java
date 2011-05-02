@@ -2,15 +2,11 @@ package mw.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.Observable;
-
 import javax.swing.JMenuItem;
 
 public interface IGameFrame {
 	
 	public void setFrameLocation();
-
-	public void update(Observable obs, Object obj);
 
 	public void addClickListener(MouseListener e);
 
@@ -29,4 +25,6 @@ public interface IGameFrame {
 	public JMenuItem getMnuSpielNeu();
 
 	public JMenuItem getMnuHelpInfo();
+
+	public void build();
 }

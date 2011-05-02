@@ -1,6 +1,7 @@
 package mw.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -24,11 +25,12 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import mw.backstage.GameLogic;
 import mw.model.BoardModel;
 import mw.model.Difficulty;
 
 @SuppressWarnings("serial")
-public class GameFrame extends JFrame implements Observer, IGameFrame {
+public class GameFrame extends JFrame implements IGameFrame, Observer {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
@@ -37,7 +39,8 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 
 	private JPanel mainPanel;
 
-	private BoardPanel boardPanel;
+	private IBoardPanel boardPanel;
+	private GameLogic gameLogic;
 	private BoardModel boardModel;
 
 	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
@@ -46,11 +49,13 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
 	private JRadioButtonMenuItem mnuSpielDiffMedium;
 	private JRadioButtonMenuItem mnuSpielDiffHard;
+	
+	
 
 	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
 		this.boardPanel = boardPanel;
 		this.boardModel = boardModel;
-
+		
 		this.setLayout(new BorderLayout());
 
 		setFrameLocation();
@@ -60,7 +65,6 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
 
-		build();
 	}
 
 	public void setFrameLocation() {
@@ -71,7 +75,7 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 
 	}
 
-	private void build() {
+	public void build() {
 
 		// Hier befindet sich die Zeit Info und die Anzahl der RestMinen
 		JPanel infoPanel = new JPanel();
@@ -91,7 +95,7 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
 		mainPanel.add(infoPanel);
-		mainPanel.add(boardPanel);
+		mainPanel.add((Component) boardPanel);
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(getJProgressBar(), BorderLayout.SOUTH);
@@ -132,6 +136,7 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 		diffGroup.add(mnuSpielDiffMedium);
 		diffGroup.add(mnuSpielDiffHard);
 
+		
 		// Wahl der Schwierigkeit durch Radio
 		Difficulty diff = boardModel.getDifficulty();
 
@@ -177,20 +182,11 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 	public JProgressBar getJProgressBar() {
 		if (progressBar == null) {
 			progressBar = new JProgressBar();
-			progressBar.setMaximum(boardModel.getCols() * boardModel.getRows());
+			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
 			progressBar.setStringPainted(true);
 		}
 
 		return progressBar;
-	}
-
-	@Override
-	public void update(Observable obs, Object obj) {
-		if (obs == boardModel) {
-			lZeit.setText(String.valueOf(boardModel.getTimePlayed()));
-			lRestMinen.setText(String.valueOf(boardModel.getRestMinen()));
-			progressBar.setValue(boardModel.getFeldZaehler());
-		}
 	}
 	
 	public void reset(){
@@ -199,12 +195,12 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 	}
 
 	private void resetTimePlayed() {
-		lZeit.setText(String.valueOf(0));
+		lZeit.setText("0");
 	}
 
 	private void resetProgressBar() {
 		progressBar.setValue(0);
-		progressBar.setMaximum(boardModel.getCols() * boardModel.getRows());
+		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
 	}
 
 	/**
@@ -215,7 +211,6 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 	public void addClickListener(MouseListener e) {
 		mnuSpielNeu.addMouseListener(e);
 		mnuHelpInfo.addMouseListener(e);
-
 	}
 
 	/**
@@ -239,6 +234,15 @@ public class GameFrame extends JFrame implements Observer, IGameFrame {
 
 	public void showAbout() {
 		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		if (obs == gameLogic) {
+			lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
+			lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
+			progressBar.setValue(gameLogic.getFeldZaehler());
+		}
 	}
 
 }

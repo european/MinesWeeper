@@ -2,29 +2,40 @@ package mw.view;
 
 import java.awt.event.MouseListener;
 
+import mw.backstage.GameLogic;
+
 
 public interface IBoardPanel {
 	
 	/**
 	 * Erstellt das Spielfeld
 	 */
-	public void build();
+	void build();
 	/**
 	 * Fügt die MouseListener hinzu
 	 * 
 	 * @param e
 	 *            MousListener
 	 */
-	public void addClickListener(MouseListener e);
+	void addClickListener(MouseListener e);
 	/**
 	 * Öffnet alle Felder, bei denen getChecked() = true ist
 	 */
-	public void redraw();
+	void redraw();
 	/**
 	 * @param rebuild
 	 *            the rebuild to set
 	 */
-	public void setRebuild(boolean rebuild);
-	public void repaint();
+	void setRebuild(boolean rebuild);
+	void repaint();
 	
+	void setRows(int rows);
+	
+	void setCols(int cols);
+	int getCols();
+	int getRows();
+	
+	void setGameLogic(GameLogic gameLogic);
+	
+	GameLogic getGameLogic();
 }

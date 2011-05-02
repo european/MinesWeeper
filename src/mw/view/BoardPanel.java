@@ -7,24 +7,27 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import mw.model.BoardModel;
+import mw.backstage.GameLogic;
 import mw.model.ButtonStatus;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 
-	private BoardModel boardModel;
+	private GameLogic gameLogic;
 
 	private FeldButton[][] board;
 
 	private MouseListener mouseListener;
-	private boolean rebuild = false, initBuild = true;;
-
-	public BoardPanel(BoardModel boardModel) {
-		this.boardModel = boardModel;
-	}
+	private boolean rebuild = false, initBuild = true;
 	
-	private int rows, cols;
+	private int rows;
+	private int cols;
+
+//	public BoardPanel(BoardModel boardModel) {
+////		this.boardModel = boardModel;
+//	}
+	
+//	private int rows, cols;
 
 	/**
 	 * Erstellt das Spielfeld
@@ -33,18 +36,18 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 		if (initBuild || rebuild) {
 			this.removeAll();
 		}
-		board = new FeldButton[boardModel.getRows()][boardModel.getCols()];
+		board = new FeldButton[getRows()][getCols()];
 
-		this.setLayout(new GridLayout(boardModel.getRows(), boardModel.getCols()));
+		this.setLayout(new GridLayout(getRows(), getCols()));
 
-		for (int y = 0; y < boardModel.getRows(); y++) {
-			for (int x = 0; x < boardModel.getCols(); x++) {
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[0].length; x++) {
 				if (initBuild || rebuild) {
 					board[y][x] = new FeldButton();
-					board[y][x].setCoords(x, y);
+					board[y][x].setCoords(y, x);
 					this.add(board[y][x]);
 				}
-				board[y][x].setIsMine(boardModel.isMine(y, x));
+//				board[y][x].setIsMine(boardModel.isMine(y, x));
 				board[y][x].reset();
 			}
 		}
@@ -72,8 +75,8 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 	 * Setzt auf die Buttons den Listener
 	 */
 	private void addListeners() {
-		for (int y = 0; y < boardModel.getRows(); y++) {
-			for (int x = 0; x < boardModel.getCols(); x++) {
+		for (int y = 0; y < getRows(); y++) {
+			for (int x = 0; x < getCols(); x++) {
 				board[y][x].addMouseListener(mouseListener);
 			}
 		}
@@ -83,17 +86,17 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 	 * Öffnet alle Felder, bei denen getChecked() = true ist
 	 */
 	public void redraw() {
-		for (int y = 0; y < boardModel.getRows(); y++) {
-			for (int x = 0; x < boardModel.getCols(); x++) {
-				if (boardModel.getChecked()[y][x]) {
-					if (board[y][x].isMine() && board[y][x].getButtonStatus() != ButtonStatus.MINE_EXPLODED) {
+		for (int y = 0; y < getRows(); y++) {
+			for (int x = 0; x < getCols(); x++) {
+				if (getGameLogic().getChecked()[y][x]) {
+					if (board[y][x].getButtonStatus() == ButtonStatus.MINE || board[y][x].isMine()) {
 						board[y][x].getMineIcon();
 					} else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED) {
 						board[y][x].getMineExplodeIcon();
 					} else {
 						// Damit 0 nicht angezeigt wird
-						if (boardModel.getBoard()[y][x] != 0) {
-							board[y][x].setText(String.valueOf(boardModel.getBoard()[y][x]));
+						if (getGameLogic().getBoard()[y][x] != 0) {
+							board[y][x].setText(String.valueOf(getGameLogic().getBoard()[y][x]));
 						}
 						board[y][x].getFieldDisabledIcon();
 					}
@@ -110,14 +113,6 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 	 */
 	public void setRebuild(boolean rebuild) {
 		this.rebuild = rebuild;
-	}
-
-	@Override
-	public void update(Observable obs, Object arg) {
-		if (obs == boardModel) {
-			setRows(boardModel.getRows());
-			setCols(boardModel.getCols());
-		}		
 	}
 
 	/**
@@ -147,5 +142,23 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 	public int getCols() {
 		return cols;
 	}
+
+	@Override
+	public void update(Observable o, Object arg1) {
+//		BoardModel model = (BoardModel) arg1;
+//        setRows(model.getRows());
+//       setCols(model.getCols());
+	}
+
+	@Override
+	public void setGameLogic(GameLogic gameLogic) {
+		this.gameLogic = gameLogic;
+		
+	}
+
+	@Override
+	public GameLogic getGameLogic() {
+		return this.gameLogic;
+	}	
 
 }
