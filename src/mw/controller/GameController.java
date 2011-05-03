@@ -28,6 +28,7 @@ public class GameController {
 
 		init();
 		// listen for mouse clicks
+		gameFrame.gameFrameInitialize();
 		gameFrame.addClickListener(new NewSpielButtonListner());
 		gameFrame.addDifficultyListener(new DiffChoiceListener());
 

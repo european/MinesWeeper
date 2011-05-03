@@ -30,7 +30,7 @@ import mw.model.BoardModel;
 import mw.model.Difficulty;
 
 @SuppressWarnings("serial")
-public class GameFrame extends JFrame implements IGameFrame, Observer {
+public class GameFrame extends JFrame implements Observer {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
@@ -49,6 +49,8 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
 	private JRadioButtonMenuItem mnuSpielDiffMedium;
 	private JRadioButtonMenuItem mnuSpielDiffHard;
+	
+	public String wintitle,authors,version;
 
 	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
 		this.boardPanel = boardPanel;
@@ -57,12 +59,26 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		this.setLayout(new BorderLayout());
 
 		setFrameLocation();
+	}
+	
+	public void gameFrameInitialize()
+  {
+    this.setTitle(wintitle);
+    this.setVisible(true);
+    this.setResizable(false);
+    this.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
+  }
+	
+	public void setAuthors(String authors) {
+    this.authors = authors;
+  }
 
-		this.setTitle("MinesWeeper v3");
-		this.setVisible(true);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
+  public void setWinTitle (String wintitle) {
+	  this.wintitle = wintitle;
 	}
 
 	public void setFrameLocation() {
@@ -230,7 +246,7 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	}
 
 	public void showAbout() {
-		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, authors, version, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override

@@ -8,6 +8,9 @@
   </bean>
 
   <bean id="newGameFrame" class="mw.view.GameFrame">
+  		<property name="winTitle" value="Minesweeper v0.3"/>
+    	<property name="authors" value="Nils Werner und Sebastian Ahlen"/>
+    	<property name="version" value="Minesweeper v0.3 03.05.2011"/>
         <constructor-arg index="1"><ref local="newBoardModel"/></constructor-arg>
         <constructor-arg index="0"><ref local="newBoardPanel"/></constructor-arg>
   </bean>
@@ -23,7 +26,7 @@
  
   <bean id="gameController" class="mw.controller.GameController">
     <constructor-arg index="0"><ref local="newGameFrame"/></constructor-arg>
-    <constructor-arg index="1"><ref local="newBoardPanel"/></constructor-arg>    
+    <constructor-arg index="1"><ref local="newBoardPanel"/></constructor-arg>
   </bean>
   
 
