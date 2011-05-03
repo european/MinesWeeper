@@ -23,6 +23,7 @@ public class BoardController extends Observable {
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
+	private String winmessage,losemessage,winmessagetitle,losemessagetitle;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -104,6 +105,22 @@ public class BoardController extends Observable {
 			notifyObservers(gameLogic);
 		}
 	}
+	
+	public void setWinMessage (String winmessage){
+	  this.winmessage = winmessage;
+	}
+	
+	public void setLoseMessage (String losemessage){
+	  this.losemessage=losemessage;
+	}
+	
+  public void setWinMessageTitle (String winmessagetitle){
+	  this.winmessagetitle = winmessagetitle;
+	}
+	  
+  public void setLoseMessageTitle (String losemessagetitle){
+	  this.losemessagetitle=losemessagetitle;
+	}
 
 	public void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
@@ -119,15 +136,15 @@ public class BoardController extends Observable {
 			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
 
 			int timePlayed = boardModel.getTimePlayed();
-			Object message = "Glückwunsch, Du hast Verloren! Und nur " + timePlayed + " Sekunden dafür benötigt. \n";
-			String title = "Du hast Verloren!";
+			Object message = losemessage + timePlayed + " Sekunden. \n";
+			String title = losemessagetitle;
 			showMessage(message, title);
 		}
 
 		if (gameLogic.checkWin()) {
 			int timePlayed = boardModel.getTimePlayed();
-			Object message = "Glückwunsch, Du hast Gewonnen! \n Du brauchtest " + timePlayed + " Sekunden um das Spiel zu beenden. \n";
-			String title = "Du hast Gewonnen!";
+			Object message = winmessage + timePlayed + " Sekunden. \n";
+			String title = winmessagetitle;
 			showMessage(message, title);
 		}
 

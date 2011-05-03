@@ -25,6 +25,10 @@
  </bean>
  
   <bean id="gameController" class="mw.controller.GameController">
+  	<property name="winmessage" value="Glückwunsch, Du hast Gewonnen! \n Du brauchtest " />
+    <property name="winmessagetitle" value="Du hast Gewonnen!" />
+    <property name="losemessage" value="Glückwunsch, Du hast Verloren! ]\n du brauchtest " />
+    <property name="losemessagetitle" value="Du hast Verloren!" />
     <constructor-arg index="0"><ref local="newGameFrame"/></constructor-arg>
     <constructor-arg index="1"><ref local="newBoardPanel"/></constructor-arg>
   </bean>
