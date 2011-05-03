@@ -2,8 +2,6 @@ package mw.view;
 
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JPanel;
 
@@ -11,7 +9,7 @@ import mw.backstage.GameLogic;
 import mw.model.ButtonStatus;
 
 @SuppressWarnings("serial")
-public class BoardPanel extends JPanel implements IBoardPanel, Observer {
+public class BoardPanel extends JPanel implements IBoardPanel {
 
 	private GameLogic gameLogic;
 
@@ -47,7 +45,6 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 					board[y][x].setCoords(y, x);
 					this.add(board[y][x]);
 				}
-//				board[y][x].setIsMine(boardModel.isMine(y, x));
 				board[y][x].reset();
 			}
 		}
@@ -89,7 +86,7 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 		for (int y = 0; y < getRows(); y++) {
 			for (int x = 0; x < getCols(); x++) {
 				if (getGameLogic().getChecked()[y][x]) {
-					if (board[y][x].getButtonStatus() == ButtonStatus.MINE || board[y][x].isMine()) {
+					if (board[y][x].getButtonStatus() == ButtonStatus.MINE || getGameLogic().isMine(y, x)) {
 						board[y][x].getMineIcon();
 					} else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED) {
 						board[y][x].getMineExplodeIcon();
@@ -141,13 +138,6 @@ public class BoardPanel extends JPanel implements IBoardPanel, Observer {
 	 */
 	public int getCols() {
 		return cols;
-	}
-
-	@Override
-	public void update(Observable o, Object arg1) {
-//		BoardModel model = (BoardModel) arg1;
-//        setRows(model.getRows());
-//       setCols(model.getCols());
 	}
 
 	@Override

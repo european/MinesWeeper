@@ -40,7 +40,7 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	private JPanel mainPanel;
 
 	private IBoardPanel boardPanel;
-	private GameLogic gameLogic;
+//	private GameLogic gameLogic;
 	private BoardModel boardModel;
 
 	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
@@ -238,11 +238,12 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if (obs == gameLogic) {
+		GameLogic gameLogic = (GameLogic) obj;
+		progressBar.setValue(gameLogic.getFeldZaehler());
 			lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
 			lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
-			progressBar.setValue(gameLogic.getFeldZaehler());
-		}
+			
+		
 	}
 
 }

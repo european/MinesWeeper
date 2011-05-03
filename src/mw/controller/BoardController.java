@@ -1,7 +1,13 @@
 package mw.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Observable;
+
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import mw.backstage.GameLogic;
 import mw.model.BoardModel;
@@ -12,13 +18,12 @@ import mw.view.FeldButton;
 import mw.view.GameFrame;
 import mw.view.IBoardPanel;
 
-public class BoardController {
+public class BoardController extends Observable {
 
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
 	
-
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
 	 * @param gameFrame 
@@ -34,76 +39,36 @@ public class BoardController {
 		
 		boardPanel.setGameLogic(gameLogic);
 		
-		boardModel.addObserver(gameFrame);
-//
+		addObserver(gameFrame);
+
 //		// Fügt den Buttons auf dem BoardGrid den Listener hinzu
 		this.boardPanel.addClickListener(new ToggleButtonListner());
+		
+		gameLogic.setTimer(new Timer(1000, new TimerAction()));
 	}
 	
+	/**
+	 * Zähler
+	 * 
+	 * @author niwe
+	 * 
+	 */
+	class TimerAction implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			gameLogic.setTimePlayed(gameLogic.getTimePlayed() + 1);
+			
+			setChanged();
+			notifyObservers(gameLogic);
+		}
+	}
 	
 	public void init() {
 		Difficulty diff = Difficulty.EINFACH;
-		boardModel.setDifficulty(diff);
+		gameLogic.setDifficulty(diff);
 		newGame();		
 	}
-	/**
-	 * Zeigt die aktuelle Zelle
-	 * 
-	 * @param e - <code>MouseEvent</code>
-	 */
-//	private void showCell(MouseEvent e) {
-//		FeldButton feldButton = (FeldButton) e.getSource();
-//		int[] coords = new int[2];
-//
-//		coords = feldButton.getCoords();
-//
-//		if (feldButton.getButtonStatus() == ButtonStatus.DEFAULT || feldButton.getButtonStatus() == ButtonStatus.FLAG) {
-//			// Öffne Feld
-//			gameLogic.openField(coords[0], coords[1]);
-//			
-//			
-//			if (feldButton.isMine()) {
-//				
-//				feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
-//				feldButton.getMineExplodeIcon();
-//				
-//				gameLogic.endGame();
-//				boardPanel.redraw();
-//				
-//				int timePlayed = boardModel.getTimePlayed();
-//				JOptionPane.showOptionDialog(
-//                		null, 
-//                		"Glückwunsch, Du hast Verloren! Und nur "+timePlayed+" Sekunden dafür benötigt. \n", 
-//                		"Du hast Verloren!", 
-//                		JOptionPane.CLOSED_OPTION, 
-//                		JOptionPane.INFORMATION_MESSAGE, null, null, null);
-//				
-//			} else {
-//				gameLogic.openField(coords[1], coords[0]);
-//				boardPanel.redraw();
-//				
-//				if(boardModel.checkWin()){
-//					gameLogic.endGame();
-//					boardPanel.redraw();
-//					
-//					int timePlayed = boardModel.getTimePlayed();
-//                	Object[] options = {"Yeah", "Nöö!"};
-//
-//                    JOptionPane.showOptionDialog(
-//                    		null, 
-//                    		"Glückwunsch, Du hast Gewonnen! Du brauchtest "+timePlayed+" Sekunden um das Spiel zu beenden. \n " +
-//                				"Möchtest du deinen Highscore eintragen?", 
-//                    		"Gewonnen!", 
-//                    		JOptionPane.YES_NO_OPTION, 
-//                    		JOptionPane.INFORMATION_MESSAGE, 
-//                    		null, 
-//                    		options,
-//                    	    options[0]);
-//				}
-//			}
-//		}
-//		
-//	}
+
 
 	/**
 	 * MouseListener für die Felder (rechts klick/ links klick)
@@ -118,12 +83,11 @@ public class BoardController {
 				if (feldButton.getButtonStatus() == ButtonStatus.DEFAULT) {
 					// Toggel der Flagge
 					// Und des Status des Enum Wertes
-					feldButton.toggleFlagButton();
 					gameLogic.setRestMinen(-1);
-				}else if(feldButton.isFlagged()){
-					feldButton.toggleFlagButton();
+				}else if(feldButton.isFlagged()){					
 					gameLogic.setRestMinen(+1);
 				}
+				feldButton.toggleFlagButton();
 
 			} else if (e.getButton() == MouseEvent.BUTTON1) {
 				if (feldButton.isFlagged()) {
@@ -136,15 +100,46 @@ public class BoardController {
 					boardPanel.redraw();
 				}
 			}
+			setChanged();
+			notifyObservers(gameLogic);
 		}
 	}
 	public void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
 		int[] coords = new int[2];
+		
 
 		coords = feldButton.getCoords();
+		int y = coords[0];
+		int x = coords[1];
 		// Sonst öffne Feld
-		gameLogic.openField(coords[0], coords[1]);		
+		gameLogic.openField(y, x);	
+		
+		if(gameLogic.checkLoose(y, x)){			
+			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
+			
+			int timePlayed = boardModel.getTimePlayed();
+			Object message = "Glückwunsch, Du hast Verloren! Und nur " + timePlayed + " Sekunden dafür benötigt. \n";
+			String title = "Du hast Verloren!";
+			showMessage(message, title);
+		}
+		
+		if(gameLogic.checkWin()){
+			int timePlayed = boardModel.getTimePlayed();
+			Object message = "Glückwunsch, Du hast Gewonnen! \n Du brauchtest "+timePlayed+" Sekunden um das Spiel zu beenden. \n";
+			String title = "Du hast Gewonnen!";
+			showMessage(message, title);
+		}	
+		
+	}
+	
+	private void showMessage(Object message, String title){		
+		JOptionPane.showOptionDialog(
+                null,
+                message,
+                title,
+                JOptionPane.CLOSED_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, null, null);
 	}
 	
 	
@@ -159,10 +154,14 @@ public class BoardController {
 		
 	}
 	public void setDifficulty(Difficulty difficulty) {
-		boardModel.setDifficulty(difficulty);				
+		gameLogic.setDifficulty(difficulty);	
+		setChanged();
+		notifyObservers(gameLogic);
 	}
 	public void setDifficultyUser(int rows, int cols, int anzahlMinen) {
-		boardModel.setDifficultyUser(rows, cols, anzahlMinen);
+		gameLogic.setDifficultyUser(rows, cols, anzahlMinen);
+		setChanged();
+		notifyObservers(gameLogic);
 	}
 	public int getRows() {
 		return boardModel.getRows();
