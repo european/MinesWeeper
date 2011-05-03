@@ -22,9 +22,9 @@ public class GameController {
 	private GameFrame gameFrame;
 	public BoardController boardController;
 
-	public GameController(GameFrame gameFrame, BoardPanel boardPanel) {
+	public GameController(GameFrame gameFrame, BoardPanel boardPanel, BoardController boardController) {
 		this.gameFrame = gameFrame;
-		this.boardController = new BoardController(this.gameFrame, boardPanel);
+		this.boardController = boardController;
 
 		init();
 		// listen for mouse clicks

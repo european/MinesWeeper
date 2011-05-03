@@ -23,7 +23,7 @@ public class BoardController extends Observable {
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
-	private String winmessage,losemessage,winmessagetitle,losemessagetitle;
+	public String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -106,23 +106,23 @@ public class BoardController extends Observable {
 		}
 	}
 	
-	public void setWinMessage (String winmessage){
-	  this.winmessage = winmessage;
-	}
-	
-	public void setLoseMessage (String losemessage){
-	  this.losemessage=losemessage;
-	}
-	
-  public void setWinMessageTitle (String winmessagetitle){
-	  this.winmessagetitle = winmessagetitle;
-	}
-	  
-  public void setLoseMessageTitle (String losemessagetitle){
-	  this.losemessagetitle=losemessagetitle;
-	}
+	public void setWinMessage(String winMessage) {
+    this.winMessage = winMessage;
+  }
 
-	public void showCell(MouseEvent e) {
+  public void setLoseMessage(String loseMessage) {
+    this.loseMessage = loseMessage;
+  }
+
+  public void setWinMessageTitle(String winMessageTitle) {
+    this.winMessageTitle = winMessageTitle;
+  }
+
+  public void setLoseMessageTitle(String loseMessageTitle) {
+    this.loseMessageTitle = loseMessageTitle;
+  }
+
+  public void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
 		int[] coords = new int[2];
 
@@ -136,15 +136,15 @@ public class BoardController extends Observable {
 			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
 
 			int timePlayed = boardModel.getTimePlayed();
-			Object message = losemessage + timePlayed + " Sekunden. \n";
-			String title = losemessagetitle;
+			Object message = loseMessage + timePlayed + " Sekunden. \n";
+			String title = loseMessageTitle;
 			showMessage(message, title);
 		}
 
 		if (gameLogic.checkWin()) {
 			int timePlayed = boardModel.getTimePlayed();
-			Object message = winmessage + timePlayed + " Sekunden. \n";
-			String title = winmessagetitle;
+			Object message = winMessage + timePlayed + " Sekunden. \n";
+			String title = winMessageTitle;
 			showMessage(message, title);
 		}
 
