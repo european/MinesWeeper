@@ -10,5 +10,13 @@
 	<classpathentry kind="lib" path="C:/Dokumente und Einstellungen/seah/Desktop/SpringExample2/SpringExample2/lib/org.springframework.context-3.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Dokumente und Einstellungen/seah/Desktop/SpringExample2/SpringExample2/lib/org.springframework.context.support-3.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Dokumente und Einstellungen/seah/Desktop/SpringExample2/SpringExample2/lib/org.springframework.core-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/antlr-runtime-3.0.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.asm-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.beans-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.context-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.context.support-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.core-3.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokumente und Einstellungen/niwe/Desktop/SpringLibs/org.springframework.expression-3.0.0.M3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

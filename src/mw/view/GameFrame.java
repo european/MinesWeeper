@@ -40,7 +40,7 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	private JPanel mainPanel;
 
 	private IBoardPanel boardPanel;
-	private GameLogic gameLogic;
+	// private GameLogic gameLogic;
 	private BoardModel boardModel;
 
 	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
@@ -49,13 +49,11 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
 	private JRadioButtonMenuItem mnuSpielDiffMedium;
 	private JRadioButtonMenuItem mnuSpielDiffHard;
-	
-	
 
 	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
 		this.boardPanel = boardPanel;
 		this.boardModel = boardModel;
-		
+
 		this.setLayout(new BorderLayout());
 
 		setFrameLocation();
@@ -136,7 +134,6 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		diffGroup.add(mnuSpielDiffMedium);
 		diffGroup.add(mnuSpielDiffHard);
 
-		
 		// Wahl der Schwierigkeit durch Radio
 		Difficulty diff = boardModel.getDifficulty();
 
@@ -188,8 +185,8 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 
 		return progressBar;
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		resetTimePlayed();
 		resetProgressBar();
 	}
@@ -238,11 +235,11 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if (obs == gameLogic) {
-			lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
-			lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
-			progressBar.setValue(gameLogic.getFeldZaehler());
-		}
+		GameLogic gameLogic = (GameLogic) obj;
+		progressBar.setValue(gameLogic.getFeldZaehler());
+		lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
+		lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
+
 	}
 
 }

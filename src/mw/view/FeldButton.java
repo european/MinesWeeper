@@ -28,7 +28,7 @@ public class FeldButton extends JButton {
 	private boolean mine;
 
 	/**
-	 * Erzeugt einen neuen FeldButton 
+	 * Erzeugt einen neuen FeldButton
 	 */
 	public FeldButton() {
 		coords = new int[2];

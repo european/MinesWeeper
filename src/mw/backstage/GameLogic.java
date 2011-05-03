@@ -1,33 +1,29 @@
 package mw.backstage;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Observable;
-
 import javax.swing.Timer;
 
 import mw.model.BoardModel;
+import mw.model.Difficulty;
 
-public class GameLogic extends Observable {
-	
-	BoardModel boardModel;
-	
-	@SuppressWarnings("unused")
-	private int restMinen;	
-	
+public class GameLogic {
+
+	private BoardModel boardModel;
+
+	private int restMinen;
+
 	private int[][] board;
 	private boolean[][] checked;
-	
+
 	private Timer timer;
 	private int timePlayed;
-	
+
 	private int feldZaehler;
-		
-	public GameLogic(BoardModel boardModel){
+
+	public GameLogic(BoardModel boardModel) {
 		this.boardModel = boardModel;
-		timer = new Timer(1000, new TimerAction());
+
 	}
-	
+
 	/**
 	 * Öffnet das Aktuell geklickte Feld
 	 * 
@@ -36,7 +32,14 @@ public class GameLogic extends Observable {
 	 */
 	public void openField(int y, int x) {
 		if (!timer.isRunning())
-			timer.start();		
+			timer.start();
+
+		if (checkWin())
+			return;
+
+		if (checkLoose(y, x))
+			return;
+
 		setFeldZaehler(getFeldZaehler() + 1);
 
 		if (board[y][x] != boardModel.getEmptyvalue()) {
@@ -46,24 +49,8 @@ public class GameLogic extends Observable {
 
 		openMoreFields(y, x);
 	}
-	
-	/**
-	 * Zähler
-	 * 
-	 * @author niwe
-	 * 
-	 */
-	class TimerAction implements ActionListener {
 
-		public void actionPerformed(ActionEvent e) {
-			timePlayed = timePlayed++;			
-
-			setChanged();
-			notifyObservers(timePlayed);
-		}
-	}
-	
-	private void openMoreFields(int startY, int startX){
+	private void openMoreFields(int startY, int startX) {
 		for (int y = startY - 1; y <= startY + 1; y++) {
 			for (int x = startX - 1; x <= startX + 1; x++) {
 				// x oder y = start coords?
@@ -78,6 +65,9 @@ public class GameLogic extends Observable {
 				if (checked[y][x])
 					continue;
 
+				if (checkWin())
+					continue;
+
 				checked[y][x] = true;
 
 				// Wenn das Feld leer ist rufe die Funktion nocheinmal auf
@@ -88,7 +78,7 @@ public class GameLogic extends Observable {
 			}
 		}
 	}
-	
+
 	public void newGame() {
 		setBoard(new int[boardModel.getRows()][boardModel.getCols()]);
 		setChecked(new boolean[boardModel.getRows()][boardModel.getCols()]);
@@ -117,16 +107,7 @@ public class GameLogic extends Observable {
 		setTimePlayed(0);
 		timer.stop();
 	}
-	
 
-	public void setRestMinen(int i) {
-		if(i == -1 || i == +1){
-			this.restMinen = boardModel.getRestMinen() - 1;
-		}
-		
-	}	
-	
-	
 	/**
 	 * Setzt alle Felder auf checked = true (eigentlich nur bei Spiel
 	 * Beendigung)
@@ -138,7 +119,7 @@ public class GameLogic extends Observable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Zählt die Bomben der 8 Felder um die gegebene Koordinate zusammen
 	 * 
@@ -148,20 +129,39 @@ public class GameLogic extends Observable {
 	private void addHintNumbers(int y, int x) {
 		for (int y2 = y - 1; y2 <= y + 1; y2++) {
 			for (int x2 = x - 1; x2 <= x + 1; x2++) {
-				if (x2 < 0 || x2 >= boardModel.getCols() || y2 < 0 || y2 >= boardModel.getRows() || board[y2][x2] == boardModel.getMinevalue())
+				if (x2 < 0 || x2 >= boardModel.getCols() || y2 < 0 || y2 >= boardModel.getRows()
+						|| board[y2][x2] == boardModel.getMinevalue())
 					continue;
 				board[y2][x2]++;
 			}
 		}
 	}
-	
+
 	/**
 	 * Prüft ob das Spiel vorbei ist
 	 * 
 	 * @return boolean
 	 */
 	public boolean checkWin() {
-		return getFeldZaehler() + boardModel.getAnzahlMinen() == boardModel.getRows() * boardModel.getCols();
+		int ergebnis = getFeldZaehler();
+		int soll = boardModel.getRows() * boardModel.getCols();
+		System.out.println(ergebnis + " Soll:" + soll);
+		if (getFeldZaehler() + getRestMinen() == boardModel.getRows() * boardModel.getCols()) {
+			System.out.println("yout win");
+			endGame();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean checkLoose(int y, int x) {
+		if (isMine(y, x)) {
+			endGame();
+			System.out.println("yout loose");
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -171,8 +171,7 @@ public class GameLogic extends Observable {
 		openAll();
 		timer.stop();
 	}
-	
-	
+
 	/**
 	 * Entwickler Modus (Zeigt in der Console das Spielfeld
 	 */
@@ -187,7 +186,27 @@ public class GameLogic extends Observable {
 			System.out.println("");
 		}
 	}
-	
+
+	/**
+	 * Entscheidet Anhand des Schwierigkeitsgrades die Anzahl der Minen, Spalten
+	 * und Zeilen
+	 * 
+	 * @param difficulty
+	 */
+	public void setDifficulty(Difficulty difficulty) {
+		boardModel.setCols(difficulty.getCols());
+		boardModel.setRows(difficulty.getRows());
+		boardModel.setAnzahlMinen(difficulty.getAnzahlMinen());
+		setRestMinen(difficulty.getAnzahlRestMinen());
+	}
+
+	public void setDifficultyUser(int rows, int cols, int anzahlMinen) {
+		boardModel.setRows(rows);
+		boardModel.setCols(cols);
+		boardModel.setAnzahlMinen(anzahlMinen);
+		setRestMinen(anzahlMinen);
+	}
+
 	/**
 	 * Prüft anhand der Koordinaten ob hier eine Mine liegt
 	 * 
@@ -195,10 +214,10 @@ public class GameLogic extends Observable {
 	 * @param y
 	 * @return boolean
 	 */
-	public boolean isMine(int x, int y) {
-		return board[x][y] == boardModel.getMinevalue();
+	public boolean isMine(int y, int x) {
+		return board[y][x] == boardModel.getMinevalue();
 	}
-	
+
 	/**
 	 * @return the feldZaehler
 	 */
@@ -207,12 +226,11 @@ public class GameLogic extends Observable {
 	}
 
 	/**
-	 * @param feldZaehler the feldZaehler to set
+	 * @param feldZaehler
+	 *            the feldZaehler to set
 	 */
 	public void setFeldZaehler(int feldZaehler) {
 		this.feldZaehler = feldZaehler;
-		setChanged();
-        notifyObservers(this);
 	}
 
 	/**
@@ -223,12 +241,11 @@ public class GameLogic extends Observable {
 	}
 
 	/**
-	 * @param timer the timer to set
+	 * @param timer
+	 *            the timer to set
 	 */
 	public void setTimer(Timer timer) {
 		this.timer = timer;
-		setChanged();
-        notifyObservers(this);
 	}
 
 	/**
@@ -239,12 +256,11 @@ public class GameLogic extends Observable {
 	}
 
 	/**
-	 * @param timePlayed the timePlayed to set
+	 * @param timePlayed
+	 *            the timePlayed to set
 	 */
 	public void setTimePlayed(int timePlayed) {
 		this.timePlayed = timePlayed;
-		setChanged();
-        notifyObservers(this);
 	}
 
 	/**
@@ -255,12 +271,11 @@ public class GameLogic extends Observable {
 	}
 
 	/**
-	 * @param board the board to set
+	 * @param board
+	 *            the board to set
 	 */
-	public void setBoard(int[][] board) {
+	private void setBoard(int[][] board) {
 		this.board = board;
-//		setChanged();
-//        notifyObservers(this);
 	}
 
 	/**
@@ -271,19 +286,24 @@ public class GameLogic extends Observable {
 	}
 
 	/**
-	 * @param checked the checked to set
+	 * @param checked
+	 *            the checked to set
 	 */
 	public void setChecked(boolean[][] checked) {
 		this.checked = checked;
-//		setChanged();
-//        notifyObservers(this);
+	}
+
+	public void setRestMinen(int restMinen) {
+		if (restMinen == -1 || restMinen == +1) {
+			this.restMinen = getRestMinen() + restMinen;
+		} else {
+			this.restMinen = restMinen;
+		}
+
 	}
 
 	public int getRestMinen() {
-		return 0;
+		return this.restMinen;
 	}
-
-	
-	
 
 }
