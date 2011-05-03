@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="newBoardModel" class="mw.model.BoardModel">
+ <!-- <constructor-arg><ref local="difficulty"/></constructor-arg> -->
+  </bean>
+
+  <bean id="newGameFrame" class="mw.view.GameFrame">
+        <constructor-arg index="1"><ref local="newBoardModel"/></constructor-arg>
+        <constructor-arg index="0"><ref local="newBoardPanel"/></constructor-arg>
+  </bean>
+  
+  <bean id="newBoardPanel" class="mw.view.BoardPanel">
+  </bean>
+    
+ <bean id="difficulty" class="mw.model.Difficulty" factory-method="valueOf">
+    <constructor-arg>
+      <value>EINFACH</value>
+    </constructor-arg>
+ </bean>
+ 
+  <bean id="gameController" class="mw.controller.GameController">
+    <constructor-arg index="0"><ref local="newGameFrame"/></constructor-arg>
+    <constructor-arg index="1"><ref local="newBoardPanel"/></constructor-arg>    
+  </bean>
+  
+
+
+</beans>
