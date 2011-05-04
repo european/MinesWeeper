@@ -34,8 +34,9 @@ public class GameFrame extends JFrame implements Observer {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
+	public int restMinen;
 
-	private JProgressBar progressBar;
+//	private JProgressBar progressBar;
 
 	private JPanel mainPanel;
 
@@ -98,7 +99,7 @@ public class GameFrame extends JFrame implements Observer {
 		lZeit = new JLabel("0");
 
 		JLabel lMines = new JLabel("Minen");
-		lRestMinen = new JLabel("0");
+		lRestMinen = new JLabel(getRestMinen());
 
 		infoPanel.add(lTime);
 		infoPanel.add(lZeit);
@@ -112,9 +113,8 @@ public class GameFrame extends JFrame implements Observer {
 		mainPanel.add((Component) boardPanel);
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
-		this.add(getJProgressBar(), BorderLayout.SOUTH);
+//		this.add(getJProgressBar(), BorderLayout.SOUTH);
 	}
-
 	/**
 	 * Diese Methode erstellt die JMenuBar
 	 * 
@@ -192,29 +192,30 @@ public class GameFrame extends JFrame implements Observer {
 	 * 
 	 * @return javax.swing.JProgressBar
 	 */
-	public JProgressBar getJProgressBar() {
-		if (progressBar == null) {
-			progressBar = new JProgressBar();
-			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
-			progressBar.setStringPainted(true);
-		}
-
-		return progressBar;
-	}
+//	public JProgressBar getJProgressBar() {
+//		if (progressBar == null) {
+//			progressBar = new JProgressBar();
+//			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
+//			progressBar.setStringPainted(true);
+//		}
+//
+//		return progressBar;
+//	}
 
 	public void reset() {
+	  lRestMinen.setText(getRestMinen());
 		resetTimePlayed();
-		resetProgressBar();
+//		resetProgressBar();
 	}
 
 	private void resetTimePlayed() {
 		lZeit.setText("0");
 	}
 
-	private void resetProgressBar() {
-		progressBar.setValue(0);
-		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
-	}
+//	private void resetProgressBar() {
+//		progressBar.setValue(0);
+//		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
+//	}
 
 	/**
 	 * 
@@ -224,6 +225,7 @@ public class GameFrame extends JFrame implements Observer {
 	public void addClickListener(MouseListener e) {
 		mnuSpielNeu.addMouseListener(e);
 		mnuHelpInfo.addMouseListener(e);
+		mnuSpielBeenden.addMouseListener(e);
 	}
 
 	/**
@@ -240,6 +242,10 @@ public class GameFrame extends JFrame implements Observer {
 	public JMenuItem getMnuSpielNeu() {
 		return mnuSpielNeu;
 	}
+	
+	public JMenuItem getMnuSpielBeenden() {
+	  return mnuSpielBeenden;
+	}
 
 	public JMenuItem getMnuHelpInfo() {
 		return mnuHelpInfo;
@@ -248,11 +254,19 @@ public class GameFrame extends JFrame implements Observer {
 	public void showAbout() {
 		JOptionPane.showMessageDialog(null, authors, version, JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	public String getRestMinen(){
+	  return restMinen + "";
+	}
+	
+	public void setRestMinen (int restMinen){
+	  this.restMinen = restMinen;
+	}
 
 	@Override
 	public void update(Observable obs, Object obj) {
 		GameLogic gameLogic = (GameLogic) obj;
-		progressBar.setValue(gameLogic.getFeldZaehler());
+//		progressBar.setValue(gameLogic.coutFeldZaehler());
 		lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
 		lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
 

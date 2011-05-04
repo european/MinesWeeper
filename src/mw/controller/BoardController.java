@@ -23,7 +23,7 @@ public class BoardController extends Observable {
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
-	public String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
+	private String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -133,7 +133,8 @@ public class BoardController extends Observable {
 		gameLogic.openField(y, x);
 
 		if (gameLogic.checkLoose(y, x)) {
-			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
+			gameLogic.endGame();
+			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 
 			int timePlayed = boardModel.getTimePlayed();
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
@@ -142,6 +143,7 @@ public class BoardController extends Observable {
 		}
 
 		if (gameLogic.checkWin()) {
+			gameLogic.endGame();
 			int timePlayed = boardModel.getTimePlayed();
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;
@@ -155,6 +157,7 @@ public class BoardController extends Observable {
 	}
 
 	public void newGame() {
+	  gameLogic.setRestMinen(getAnzahlMinen());
 		gameLogic.newGame();
 		// rebuild the gamefield with MineButtons
 		boardPanel.setRebuild(true);
@@ -162,7 +165,6 @@ public class BoardController extends Observable {
 		boardPanel.setRows(getRows());
 
 		boardPanel.build();
-
 	}
 
 	public void setDifficulty(Difficulty difficulty) {

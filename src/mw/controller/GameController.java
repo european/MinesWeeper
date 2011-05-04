@@ -47,6 +47,9 @@ public class GameController {
 				} else if (source == gameFrame.getMnuHelpInfo()) {
 					gameFrame.showAbout();
 				}
+				    else if (source == gameFrame.getMnuSpielBeenden()) {
+				      System.exit(0);
+				}
 				// Highscore
 			}
 
@@ -86,6 +89,7 @@ public class GameController {
 
 	public void reValidate() {
 		// update the parent gameFrame with new dimensionx
+	  gameFrame.setRestMinen(boardController.getAnzahlMinen());
 		gameFrame.reset();
 		gameFrame.setFrameLocation();
 		gameFrame.pack();
