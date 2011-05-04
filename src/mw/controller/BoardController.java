@@ -133,7 +133,8 @@ public class BoardController extends Observable {
 		gameLogic.openField(y, x);
 
 		if (gameLogic.checkLoose(y, x)) {
-			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
+			gameLogic.endGame();
+			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 
 			int timePlayed = boardModel.getTimePlayed();
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
@@ -142,6 +143,7 @@ public class BoardController extends Observable {
 		}
 
 		if (gameLogic.checkWin()) {
+			gameLogic.endGame();
 			int timePlayed = boardModel.getTimePlayed();
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;

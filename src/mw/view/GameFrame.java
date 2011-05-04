@@ -35,7 +35,7 @@ public class GameFrame extends JFrame implements Observer {
 	private JLabel lZeit;
 	private JLabel lRestMinen;
 
-	private JProgressBar progressBar;
+//	private JProgressBar progressBar;
 
 	private JPanel mainPanel;
 
@@ -112,7 +112,7 @@ public class GameFrame extends JFrame implements Observer {
 		mainPanel.add((Component) boardPanel);
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
-		this.add(getJProgressBar(), BorderLayout.SOUTH);
+//		this.add(getJProgressBar(), BorderLayout.SOUTH);
 	}
 
 	/**
@@ -192,29 +192,29 @@ public class GameFrame extends JFrame implements Observer {
 	 * 
 	 * @return javax.swing.JProgressBar
 	 */
-	public JProgressBar getJProgressBar() {
-		if (progressBar == null) {
-			progressBar = new JProgressBar();
-			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
-			progressBar.setStringPainted(true);
-		}
-
-		return progressBar;
-	}
+//	public JProgressBar getJProgressBar() {
+//		if (progressBar == null) {
+//			progressBar = new JProgressBar();
+//			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
+//			progressBar.setStringPainted(true);
+//		}
+//
+//		return progressBar;
+//	}
 
 	public void reset() {
 		resetTimePlayed();
-		resetProgressBar();
+//		resetProgressBar();
 	}
 
 	private void resetTimePlayed() {
 		lZeit.setText("0");
 	}
 
-	private void resetProgressBar() {
-		progressBar.setValue(0);
-		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
-	}
+//	private void resetProgressBar() {
+//		progressBar.setValue(0);
+//		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
+//	}
 
 	/**
 	 * 
@@ -252,7 +252,7 @@ public class GameFrame extends JFrame implements Observer {
 	@Override
 	public void update(Observable obs, Object obj) {
 		GameLogic gameLogic = (GameLogic) obj;
-		progressBar.setValue(gameLogic.getFeldZaehler());
+//		progressBar.setValue(gameLogic.coutFeldZaehler());
 		lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
 		lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
 

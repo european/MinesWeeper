@@ -33,19 +33,18 @@ public class GameLogic {
 	public void openField(int y, int x) {
 		if (!timer.isRunning())
 			timer.start();
-
+		
+		feldZaehler++;
+		checked[y][x] = true;
+		
+		if (board[y][x] != boardModel.getEmptyvalue())
+			return;
+		
 		if (checkWin())
 			return;
 
 		if (checkLoose(y, x))
 			return;
-
-		setFeldZaehler(getFeldZaehler() + 1);
-
-		if (board[y][x] != boardModel.getEmptyvalue()) {
-			checked[y][x] = true;
-			return;
-		}
 
 		openMoreFields(y, x);
 	}
@@ -54,8 +53,12 @@ public class GameLogic {
 		for (int y = startY - 1; y <= startY + 1; y++) {
 			for (int x = startX - 1; x <= startX + 1; x++) {
 				// x oder y = start coords?
-				if (y == startY && x == startX)
+				if (y == startY && x == startX){
+					System.out.println("hier ich return");
+					if(checked[y][x])
+						System.out.println("wurde aber eigentlich gechecket");
 					continue;
+				}
 
 				// Außerhalb des Bereiches?
 				if (x < 0 || x > boardModel.getCols() - 1 || y < 0 || y > boardModel.getRows() - 1)
@@ -74,7 +77,7 @@ public class GameLogic {
 				if (board[y][x] == boardModel.getEmptyvalue())
 					openMoreFields(y, x);
 
-				setFeldZaehler(getFeldZaehler() + 1);
+				feldZaehler++;
 			}
 		}
 	}
@@ -86,7 +89,9 @@ public class GameLogic {
 		setFeldZaehler(0);
 
 		int counter = 1;
-		int x = 0, y = 0;
+		
+		int y = 0;
+		int x = 0;
 
 		while (counter <= boardModel.getAnzahlMinen()) {
 			y = (int) (Math.random() * boardModel.getRows());
@@ -142,26 +147,12 @@ public class GameLogic {
 	 * 
 	 * @return boolean
 	 */
-	public boolean checkWin() {
-		int ergebnis = getFeldZaehler();
-		int soll = boardModel.getRows() * boardModel.getCols();
-		System.out.println(ergebnis + " Soll:" + soll);
-		if (getFeldZaehler() + getRestMinen() == boardModel.getRows() * boardModel.getCols()) {
-			System.out.println("yout win");
-			endGame();
-			return true;
-		} else {
-			return false;
-		}
+	public boolean checkWin() {		
+		return coutFeldZaehler() + boardModel.getAnzahlMinen() == boardModel.getRows() * boardModel.getCols();
 	}
 
 	public boolean checkLoose(int y, int x) {
-		if (isMine(y, x)) {
-			endGame();
-			System.out.println("yout loose");
-			return true;
-		}
-		return false;
+		return isMine(y, x);
 	}
 
 	/**
@@ -185,6 +176,7 @@ public class GameLogic {
 			}
 			System.out.println("");
 		}
+		System.out.println("");
 	}
 
 	/**
@@ -231,6 +223,20 @@ public class GameLogic {
 	 */
 	public void setFeldZaehler(int feldZaehler) {
 		this.feldZaehler = feldZaehler;
+	}
+	
+	public int coutFeldZaehler(){
+		int count = 0;
+		
+		for (int y = 0; y < boardModel.getRows(); y++) {
+			for (int x = 0; x < boardModel.getCols(); x++) {
+				if (checked[y][x])
+					count++;			
+			}
+		}
+		
+		return count;
+		
 	}
 
 	/**
