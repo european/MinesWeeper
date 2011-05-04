@@ -89,14 +89,9 @@ public class GameLogic {
 		setFeldZaehler(0);
 
 		int counter = 1;
-<<<<<<< HEAD
-		int x = 0; 
-		int y = 0;
-=======
 		
 		int y = 0;
 		int x = 0;
->>>>>>> refs/remotes/origin/DevMitSpring
 
 		while (counter <= boardModel.getAnzahlMinen()) {
 			y = (int) (Math.random() * boardModel.getRows());
