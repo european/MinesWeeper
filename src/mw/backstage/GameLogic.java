@@ -54,9 +54,9 @@ public class GameLogic {
 			for (int x = startX - 1; x <= startX + 1; x++) {
 				// x oder y = start coords?
 				if (y == startY && x == startX){
-					System.out.println("hier ich return");
+//					System.out.println("hier ich return");
 					if(checked[y][x])
-						System.out.println("wurde aber eigentlich gechecket");
+//						System.out.println("wurde aber eigentlich gechecket");
 					continue;
 				}
 
