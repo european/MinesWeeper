@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.JOptionPane;
@@ -136,7 +138,7 @@ public class BoardController extends Observable {
 			gameLogic.endGame();
 			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 
-			int timePlayed = boardModel.getTimePlayed();
+			int timePlayed = gameLogic.getTimePlayed();
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
 			String title = loseMessageTitle;
 			showMessage(message, title);
@@ -144,7 +146,8 @@ public class BoardController extends Observable {
 
 		if (gameLogic.checkWin()) {
 			gameLogic.endGame();
-			int timePlayed = boardModel.getTimePlayed();
+			int timePlayed = gameLogic.getTimePlayed();
+      writeHighScoreToFile(timePlayed);
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;
 			showMessage(message, title);
@@ -154,6 +157,22 @@ public class BoardController extends Observable {
 
 	private void showMessage(Object message, String title) {
 		JOptionPane.showOptionDialog(null, message, title, JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+	}
+	
+	 private void writeHighScoreToFile(int timePlayed){
+	    BufferedWriter writer;
+	    
+	    try {
+	        writer = new BufferedWriter(new FileWriter("highScore.txt"));
+	        writer.write(timePlayed);
+	        writer.newLine();
+	        writer.write("Highscore");
+	        System.out.println(timePlayed + "Sekunden "+"gespeichert");
+	        
+
+	    } catch (IOException e) {
+	        System.err.println("Fehler beim Speichern des High Scores.");
+	    }
 	}
 
 	public void newGame() {
