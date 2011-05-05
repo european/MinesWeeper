@@ -34,6 +34,7 @@ public class GameFrame extends JFrame implements Observer {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
+	public int restMinen;
 
 //	private JProgressBar progressBar;
 
@@ -43,7 +44,7 @@ public class GameFrame extends JFrame implements Observer {
 	// private GameLogic gameLogic;
 	private BoardModel boardModel;
 
-	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
+	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo,mnuHighScore;
 
 	private ButtonGroup diffGroup;
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
@@ -98,7 +99,7 @@ public class GameFrame extends JFrame implements Observer {
 		lZeit = new JLabel("0");
 
 		JLabel lMines = new JLabel("Minen");
-		lRestMinen = new JLabel("0");
+		lRestMinen = new JLabel(getRestMinen());
 
 		infoPanel.add(lTime);
 		infoPanel.add(lZeit);
@@ -114,7 +115,6 @@ public class GameFrame extends JFrame implements Observer {
 		this.add(mainPanel, BorderLayout.CENTER);
 //		this.add(getJProgressBar(), BorderLayout.SOUTH);
 	}
-
 	/**
 	 * Diese Methode erstellt die JMenuBar
 	 * 
@@ -134,6 +134,8 @@ public class GameFrame extends JFrame implements Observer {
 
 		mnuSpielBeenden = new JMenuItem("Beenden");
 		mnuSpielBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		
+		mnuHighScore = new JMenuItem("HighScore");
 
 		mSpiel.add(mnuSpielNeu);
 
@@ -166,6 +168,8 @@ public class GameFrame extends JFrame implements Observer {
 
 		mSpiel.add(mnuSpielDiffUser);
 
+		mSpiel.addSeparator();
+		mSpiel.add(mnuHighScore);
 		mSpiel.addSeparator();
 		mSpiel.add(mnuSpielBeenden);
 
@@ -203,6 +207,7 @@ public class GameFrame extends JFrame implements Observer {
 //	}
 
 	public void reset() {
+	  lRestMinen.setText(getRestMinen());
 		resetTimePlayed();
 //		resetProgressBar();
 	}
@@ -224,6 +229,8 @@ public class GameFrame extends JFrame implements Observer {
 	public void addClickListener(MouseListener e) {
 		mnuSpielNeu.addMouseListener(e);
 		mnuHelpInfo.addMouseListener(e);
+		mnuSpielBeenden.addMouseListener(e);
+		mnuHighScore.addMouseListener(e);
 	}
 
 	/**
@@ -240,6 +247,14 @@ public class GameFrame extends JFrame implements Observer {
 	public JMenuItem getMnuSpielNeu() {
 		return mnuSpielNeu;
 	}
+	
+	public JMenuItem getMnuSpielBeenden() {
+	  return mnuSpielBeenden;
+	}
+	
+	public JMenuItem getMnuHighScore() {
+	  return mnuHighScore;
+	}
 
 	public JMenuItem getMnuHelpInfo() {
 		return mnuHelpInfo;
@@ -247,6 +262,14 @@ public class GameFrame extends JFrame implements Observer {
 
 	public void showAbout() {
 		JOptionPane.showMessageDialog(null, authors, version, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public String getRestMinen(){
+	  return restMinen + "";
+	}
+	
+	public void setRestMinen (int restMinen){
+	  this.restMinen = restMinen;
 	}
 
 	@Override

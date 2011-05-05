@@ -23,7 +23,7 @@ public class BoardController extends Observable {
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
-	public String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
+	private String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -157,6 +157,7 @@ public class BoardController extends Observable {
 	}
 
 	public void newGame() {
+	  gameLogic.setRestMinen(getAnzahlMinen());
 		gameLogic.newGame();
 		// rebuild the gamefield with MineButtons
 		boardPanel.setRebuild(true);
@@ -164,7 +165,6 @@ public class BoardController extends Observable {
 		boardPanel.setRows(getRows());
 
 		boardPanel.build();
-
 	}
 
 	public void setDifficulty(Difficulty difficulty) {
