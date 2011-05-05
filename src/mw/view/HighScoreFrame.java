@@ -21,7 +21,7 @@ public class HighScoreFrame extends JFrame {
   public void initialize() {
     this.setVisible(true);
     this.setResizable(false);
-    this.setDefaultCloseOperation(HighScoreFrame.EXIT_ON_CLOSE);
+    this.setDefaultCloseOperation(HighScoreFrame.HIDE_ON_CLOSE);
     this.setTitle("HighScore");
   }
   
