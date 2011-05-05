@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.JOptionPane;
@@ -78,11 +80,6 @@ public class BoardController extends Observable {
 		// Wenn die Maus gedrück ist, dann
 		public void mousePressed(MouseEvent e) {
 			FeldButton feldButton = (FeldButton) e.getSource();
-			int[] coords = new int[2];
-
-			coords = feldButton.getCoords();
-			int y = coords[0];
-			int x = coords[1];
 
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				// Entweder noch offen oder schon eine Flagge
@@ -94,17 +91,15 @@ public class BoardController extends Observable {
 					gameLogic.setRestMinen(+1);
 				}
 				feldButton.toggleFlagButton();
-				gameLogic.toggleFlagValue(y, x);
 
 			} else if (e.getButton() == MouseEvent.BUTTON1) {
 				if (feldButton.isFlagged()) {
 					// Wenn das eine Flagge ist Entferne die Flagge
 					feldButton.toggleFlagButton();
-					gameLogic.toggleFlagValue(y, x);
-					gameLogic.setRestMinen(+1);					
+					gameLogic.setRestMinen(+1);
 				} else {
 					// Sonst zeige die Zelle
-					showCell(y,x);
+					showCell(e);
 					boardPanel.redraw();
 				}
 			}
@@ -128,25 +123,72 @@ public class BoardController extends Observable {
   public void setLoseMessageTitle(String loseMessageTitle) {
     this.loseMessageTitle = loseMessageTitle;
   }
+  
+  private void getHighScoreFromFile(int timePlayed, String diff){
+    BufferedReader reader;
+    
+    try {
+        reader = new BufferedReader(new FileReader("highScore.txt"));
+        String zeile = reader.readLine();
+        ArrayList<String> values = new ArrayList<String>();
+ /*       while (zeile != null) {
+            values.add(zeile.split(";").toString());
+            System.out.println(zeile);
+        } */
+        System.out.println(values.size());
+        System.out.println(zeile);
+        writeHighScoreToFile(timePlayed, zeile, diff);
 
-  public void showCell(int y, int x) {
-//		FeldButton feldButton = (FeldButton) e.getSource();
-//		int[] coords = new int[2];
-//
-//		coords = feldButton.getCoords();
-//		int y = coords[0];
-//		int x = coords[1];
+    } catch (IOException e) {
+        System.err.println("Fehler beim Laden des High Scores."); 
+    }
+}  
+  
+  private void writeHighScoreToFile(int timePlayed, String text, String diff){
+    BufferedWriter writer = null;
+    String time;
+    time = String.valueOf(timePlayed);
+    
+    try {
+        writer = new BufferedWriter(new FileWriter("highScore.txt")); 
+        writer.write(diff+";"+time+";");
+        writer.newLine();
+        writer.write(text);
+        System.out.println(timePlayed + "Sekunden "+"gespeichert");
+        
+
+    } catch (IOException e) {
+        System.err.println("Fehler beim Speichern des High Scores.");
+    }
+    finally {
+      try { if (writer != null){
+       writer.flush();
+       writer.close();
+      }
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+    }
+}
+
+  public void showCell(MouseEvent e) {
+		FeldButton feldButton = (FeldButton) e.getSource();
+		int[] coords = new int[2];
+
+		coords = feldButton.getCoords();
+		int y = coords[0];
+		int x = coords[1];
 		// Sonst öffne Feld
 		gameLogic.openField(y, x);
 
 		if (gameLogic.checkLoose(y, x)) {
 			gameLogic.endGame();
-//			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
-
+			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 			int timePlayed = gameLogic.getTimePlayed();
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
 			String title = loseMessageTitle;
 			showMessage(message, title);
+	    getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
 		}
 
 		if (gameLogic.checkWin()) {
@@ -155,6 +197,7 @@ public class BoardController extends Observable {
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;
 			showMessage(message, title);
+			getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
 		}
 
 	}

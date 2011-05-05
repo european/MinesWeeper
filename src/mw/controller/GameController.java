@@ -32,6 +32,7 @@ public class GameController {
 		gameFrame.gameFrameInitialize();
 		gameFrame.addClickListener(new NewSpielButtonListner());
 		gameFrame.addDifficultyListener(new DiffChoiceListener());
+		highScoreFrame = new HighScoreFrame(300,300);
 
 		gameFrame.pack();
 		gameFrame.repaint();
@@ -52,11 +53,8 @@ public class GameController {
 				      System.exit(0);
 				}
 				    else if (source == gameFrame.getMnuHighScore()) {
-				      highScoreFrame = new HighScoreFrame(300,300);
-				      highScoreFrame.setFrameLocation();
 				      highScoreFrame.initialize();
 				    }
-				// Highscore
 			}
 
 		}
