@@ -33,7 +33,7 @@ public class GameLogic {
 	public void openField(int y, int x) {
 		if (!timer.isRunning())
 			timer.start();
-		
+				
 		feldZaehler++;
 		checked[y][x] = true;
 		
@@ -53,19 +53,18 @@ public class GameLogic {
 		for (int y = startY - 1; y <= startY + 1; y++) {
 			for (int x = startX - 1; x <= startX + 1; x++) {
 				// x oder y = start coords?
-				if (y == startY && x == startX){
-//					System.out.println("hier ich return");
-					if(checked[y][x])
-//						System.out.println("wurde aber eigentlich gechecket");
+				if (y == startY && x == startX)
 					continue;
-				}
-
+				
 				// Außerhalb des Bereiches?
 				if (x < 0 || x > boardModel.getCols() - 1 || y < 0 || y > boardModel.getRows() - 1)
 					continue;
 
 				// Feld schon gechecked?
 				if (checked[y][x])
+					continue;
+				
+				if(board[y][x] == boardModel.getFlagvalue())
 					continue;
 
 				if (checkWin())
@@ -310,6 +309,14 @@ public class GameLogic {
 
 	public int getRestMinen() {
 		return this.restMinen;
+	}
+	
+	public void toggleFlagValue(int y, int x){
+		if(getBoard()[y][x] == boardModel.getFlagvalue()){
+			getBoard()[y][x] = boardModel.getEmptyvalue();
+		}else{
+			getBoard()[y][x] = boardModel.getFlagvalue();
+		}
 	}
 
 }

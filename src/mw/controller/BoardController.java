@@ -78,6 +78,11 @@ public class BoardController extends Observable {
 		// Wenn die Maus gedrück ist, dann
 		public void mousePressed(MouseEvent e) {
 			FeldButton feldButton = (FeldButton) e.getSource();
+			int[] coords = new int[2];
+
+			coords = feldButton.getCoords();
+			int y = coords[0];
+			int x = coords[1];
 
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				// Entweder noch offen oder schon eine Flagge
@@ -89,15 +94,17 @@ public class BoardController extends Observable {
 					gameLogic.setRestMinen(+1);
 				}
 				feldButton.toggleFlagButton();
+				gameLogic.toggleFlagValue(y, x);
 
 			} else if (e.getButton() == MouseEvent.BUTTON1) {
 				if (feldButton.isFlagged()) {
 					// Wenn das eine Flagge ist Entferne die Flagge
 					feldButton.toggleFlagButton();
-					gameLogic.setRestMinen(+1);
+					gameLogic.toggleFlagValue(y, x);
+					gameLogic.setRestMinen(+1);					
 				} else {
 					// Sonst zeige die Zelle
-					showCell(e);
+					showCell(y,x);
 					boardPanel.redraw();
 				}
 			}
@@ -122,19 +129,19 @@ public class BoardController extends Observable {
     this.loseMessageTitle = loseMessageTitle;
   }
 
-  public void showCell(MouseEvent e) {
-		FeldButton feldButton = (FeldButton) e.getSource();
-		int[] coords = new int[2];
-
-		coords = feldButton.getCoords();
-		int y = coords[0];
-		int x = coords[1];
+  public void showCell(int y, int x) {
+//		FeldButton feldButton = (FeldButton) e.getSource();
+//		int[] coords = new int[2];
+//
+//		coords = feldButton.getCoords();
+//		int y = coords[0];
+//		int x = coords[1];
 		// Sonst öffne Feld
 		gameLogic.openField(y, x);
 
 		if (gameLogic.checkLoose(y, x)) {
 			gameLogic.endGame();
-			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
+//			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 
 			int timePlayed = gameLogic.getTimePlayed();
 			Object message = loseMessage + timePlayed + " Sekunden. \n";

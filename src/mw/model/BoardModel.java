@@ -8,6 +8,7 @@ public class BoardModel {
 
 	private static final int MINEVALUE = -1;
 	private static final int EMPTYVALUE = 0;
+	private static final int FLAGVALUE = -2;
 
 	private Difficulty difficulty;
 
@@ -75,6 +76,13 @@ public class BoardModel {
 	 */
 	public Difficulty getDifficulty() {
 		return difficulty;
+	}
+
+	/**
+	 * @return the flagvalue
+	 */
+	public int getFlagvalue() {
+		return FLAGVALUE;
 	}
 
 }
