@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
 import mw.model.Difficulty;
-import mw.view.BoardPanel;
 import mw.view.GameFrame;
 import mw.view.HighScoreFrame;
 
@@ -24,7 +23,7 @@ public class GameController {
 	private HighScoreFrame highScoreFrame;
 	public BoardController boardController;
 
-	public GameController(GameFrame gameFrame, BoardPanel boardPanel, BoardController boardController) {
+	public GameController(GameFrame gameFrame, BoardController boardController) {
 		this.gameFrame = gameFrame;
 		this.boardController = boardController;
 

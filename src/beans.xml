@@ -35,8 +35,7 @@
  
   <bean id="gameController" class="mw.controller.GameController">
     <constructor-arg index="0"><ref local="newGameFrame"/></constructor-arg>
-    <constructor-arg index="1"><ref local="newBoardPanel"/></constructor-arg>
-    <constructor-arg index="2"><ref local="newBoardController"/></constructor-arg>
+    <constructor-arg index="1"><ref local="newBoardController"/></constructor-arg>
   </bean>
   
 
