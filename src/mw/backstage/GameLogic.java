@@ -6,24 +6,24 @@ import mw.model.BoardModel;
 import mw.model.Difficulty;
 
 public class GameLogic {
-	
+
 	private BoardModel boardModel;
-	
-	private int restMinen;	
-	
+
+	private int restMinen;
+
 	private int[][] board;
 	private boolean[][] checked;
-	
+
 	private Timer timer;
 	private int timePlayed;
-	
+
 	private int feldZaehler;
-		
-	public GameLogic(BoardModel boardModel){
+
+	public GameLogic(BoardModel boardModel) {
 		this.boardModel = boardModel;
-		
+
 	}
-	
+
 	/**
 	 * Öffnet das Aktuell geklickte Feld
 	 * 
@@ -32,31 +32,33 @@ public class GameLogic {
 	 */
 	public void openField(int y, int x) {
 		if (!timer.isRunning())
-			timer.start();		
+			timer.start();
 		
-		if(checkWin())
+		feldZaehler++;
+		checked[y][x] = true;
+		
+		if (board[y][x] != boardModel.getEmptyvalue())
 			return;
 		
-		if(checkLoose(y,x))
+		if (checkWin())
 			return;
-				
-		setFeldZaehler(getFeldZaehler() + 1);
 
-		if (board[y][x] != boardModel.getEmptyvalue()) {
-			checked[y][x] = true;
+		if (checkLoose(y, x))
 			return;
-		}
 
 		openMoreFields(y, x);
 	}
 
-	
-	private void openMoreFields(int startY, int startX){
+	private void openMoreFields(int startY, int startX) {
 		for (int y = startY - 1; y <= startY + 1; y++) {
 			for (int x = startX - 1; x <= startX + 1; x++) {
 				// x oder y = start coords?
-				if (y == startY && x == startX)
+				if (y == startY && x == startX){
+//					System.out.println("hier ich return");
+					if(checked[y][x])
+//						System.out.println("wurde aber eigentlich gechecket");
 					continue;
+				}
 
 				// Außerhalb des Bereiches?
 				if (x < 0 || x > boardModel.getCols() - 1 || y < 0 || y > boardModel.getRows() - 1)
@@ -65,21 +67,21 @@ public class GameLogic {
 				// Feld schon gechecked?
 				if (checked[y][x])
 					continue;
-				
-				if(checkWin())
+
+				if (checkWin())
 					continue;
-				
+
 				checked[y][x] = true;
 
 				// Wenn das Feld leer ist rufe die Funktion nocheinmal auf
 				if (board[y][x] == boardModel.getEmptyvalue())
 					openMoreFields(y, x);
 
-				setFeldZaehler(getFeldZaehler() + 1);
+				feldZaehler++;
 			}
 		}
 	}
-	
+
 	public void newGame() {
 		setBoard(new int[boardModel.getRows()][boardModel.getCols()]);
 		setChecked(new boolean[boardModel.getRows()][boardModel.getCols()]);
@@ -87,7 +89,9 @@ public class GameLogic {
 		setFeldZaehler(0);
 
 		int counter = 1;
-		int x = 0, y = 0;
+		
+		int y = 0;
+		int x = 0;
 
 		while (counter <= boardModel.getAnzahlMinen()) {
 			y = (int) (Math.random() * boardModel.getRows());
@@ -108,11 +112,7 @@ public class GameLogic {
 		setTimePlayed(0);
 		timer.stop();
 	}
-	
 
-		
-	
-	
 	/**
 	 * Setzt alle Felder auf checked = true (eigentlich nur bei Spiel
 	 * Beendigung)
@@ -124,7 +124,7 @@ public class GameLogic {
 			}
 		}
 	}
-	
+
 	/**
 	 * Zählt die Bomben der 8 Felder um die gegebene Koordinate zusammen
 	 * 
@@ -134,39 +134,25 @@ public class GameLogic {
 	private void addHintNumbers(int y, int x) {
 		for (int y2 = y - 1; y2 <= y + 1; y2++) {
 			for (int x2 = x - 1; x2 <= x + 1; x2++) {
-				if (x2 < 0 || x2 >= boardModel.getCols() || y2 < 0 || y2 >= boardModel.getRows() || board[y2][x2] == boardModel.getMinevalue())
+				if (x2 < 0 || x2 >= boardModel.getCols() || y2 < 0 || y2 >= boardModel.getRows()
+						|| board[y2][x2] == boardModel.getMinevalue())
 					continue;
 				board[y2][x2]++;
 			}
 		}
 	}
-	
+
 	/**
 	 * Prüft ob das Spiel vorbei ist
 	 * 
 	 * @return boolean
 	 */
-	public boolean checkWin() {
-		int ergebnis = getFeldZaehler();
-		int soll = boardModel.getRows() * boardModel.getCols();
-		System.out.println(ergebnis + " Soll:" + soll);
-		if(getFeldZaehler() + getRestMinen() == boardModel.getRows() * boardModel.getCols()){
-			System.out.println("yout win");
-			endGame();
-			return true;
-		}
-		else{
-			return false;
-		}
+	public boolean checkWin() {		
+		return coutFeldZaehler() + boardModel.getAnzahlMinen() == boardModel.getRows() * boardModel.getCols();
 	}
-	
-	public boolean checkLoose(int y, int x){
-		if(isMine(y, x)){
-			endGame();
-			System.out.println("yout loose");
-			return true;
-		}
-		return false;		
+
+	public boolean checkLoose(int y, int x) {
+		return isMine(y, x);
 	}
 
 	/**
@@ -176,8 +162,7 @@ public class GameLogic {
 		openAll();
 		timer.stop();
 	}
-	
-	
+
 	/**
 	 * Entwickler Modus (Zeigt in der Console das Spielfeld
 	 */
@@ -191,8 +176,9 @@ public class GameLogic {
 			}
 			System.out.println("");
 		}
+		System.out.println("");
 	}
-	
+
 	/**
 	 * Entscheidet Anhand des Schwierigkeitsgrades die Anzahl der Minen, Spalten
 	 * und Zeilen
@@ -212,7 +198,7 @@ public class GameLogic {
 		boardModel.setAnzahlMinen(anzahlMinen);
 		setRestMinen(anzahlMinen);
 	}
-	
+
 	/**
 	 * Prüft anhand der Koordinaten ob hier eine Mine liegt
 	 * 
@@ -223,7 +209,7 @@ public class GameLogic {
 	public boolean isMine(int y, int x) {
 		return board[y][x] == boardModel.getMinevalue();
 	}
-	
+
 	/**
 	 * @return the feldZaehler
 	 */
@@ -232,10 +218,25 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param feldZaehler the feldZaehler to set
+	 * @param feldZaehler
+	 *            the feldZaehler to set
 	 */
 	public void setFeldZaehler(int feldZaehler) {
 		this.feldZaehler = feldZaehler;
+	}
+	
+	public int coutFeldZaehler(){
+		int count = 0;
+		
+		for (int y = 0; y < boardModel.getRows(); y++) {
+			for (int x = 0; x < boardModel.getCols(); x++) {
+				if (checked[y][x])
+					count++;			
+			}
+		}
+		
+		return count;
+		
 	}
 
 	/**
@@ -246,7 +247,8 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param timer the timer to set
+	 * @param timer
+	 *            the timer to set
 	 */
 	public void setTimer(Timer timer) {
 		this.timer = timer;
@@ -260,7 +262,8 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param timePlayed the timePlayed to set
+	 * @param timePlayed
+	 *            the timePlayed to set
 	 */
 	public void setTimePlayed(int timePlayed) {
 		this.timePlayed = timePlayed;
@@ -274,7 +277,8 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param board the board to set
+	 * @param board
+	 *            the board to set
 	 */
 	private void setBoard(int[][] board) {
 		this.board = board;
@@ -288,25 +292,24 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param checked the checked to set
+	 * @param checked
+	 *            the checked to set
 	 */
 	public void setChecked(boolean[][] checked) {
 		this.checked = checked;
 	}
 
 	public void setRestMinen(int restMinen) {
-		if(restMinen == -1 || restMinen == +1){
+		if (restMinen == -1 || restMinen == +1) {
 			this.restMinen = getRestMinen() + restMinen;
-		}else{
+		} else {
 			this.restMinen = restMinen;
 		}
-		
+
 	}
+
 	public int getRestMinen() {
 		return this.restMinen;
 	}
-
-	
-	
 
 }

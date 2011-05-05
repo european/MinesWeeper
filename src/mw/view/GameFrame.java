@@ -21,7 +21,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
@@ -30,41 +29,52 @@ import mw.model.BoardModel;
 import mw.model.Difficulty;
 
 @SuppressWarnings("serial")
-public class GameFrame extends JFrame implements IGameFrame, Observer {
+public class GameFrame extends JFrame implements Observer {
 
 	private JLabel lZeit;
 	private JLabel lRestMinen;
-
-	private JProgressBar progressBar;
+	public int restMinen;
 
 	private JPanel mainPanel;
 
 	private IBoardPanel boardPanel;
-//	private GameLogic gameLogic;
 	private BoardModel boardModel;
 
-	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
+	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo, mnuHighScore;
 
 	private ButtonGroup diffGroup;
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
 	private JRadioButtonMenuItem mnuSpielDiffMedium;
 	private JRadioButtonMenuItem mnuSpielDiffHard;
-	
-	
+
+	public String wintitle, authors, version;
 
 	public GameFrame(BoardPanel boardPanel, BoardModel boardModel) {
 		this.boardPanel = boardPanel;
 		this.boardModel = boardModel;
-		
+
 		this.setLayout(new BorderLayout());
 
 		setFrameLocation();
+	}
 
-		this.setTitle("MinesWeeper v3");
+	public void gameFrameInitialize() {
+		this.setTitle(wintitle);
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(GameFrame.EXIT_ON_CLOSE);
+	}
 
+	public void setAuthors(String authors) {
+		this.authors = authors;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public void setWinTitle(String wintitle) {
+		this.wintitle = wintitle;
 	}
 
 	public void setFrameLocation() {
@@ -84,7 +94,7 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		lZeit = new JLabel("0");
 
 		JLabel lMines = new JLabel("Minen");
-		lRestMinen = new JLabel("0");
+		lRestMinen = new JLabel(getRestMinen());
 
 		infoPanel.add(lTime);
 		infoPanel.add(lZeit);
@@ -98,7 +108,6 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		mainPanel.add((Component) boardPanel);
 		this.add(getJMenuBar(), BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
-		this.add(getJProgressBar(), BorderLayout.SOUTH);
 	}
 
 	/**
@@ -121,6 +130,8 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		mnuSpielBeenden = new JMenuItem("Beenden");
 		mnuSpielBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 
+		mnuHighScore = new JMenuItem("HighScore");
+
 		mSpiel.add(mnuSpielNeu);
 
 		mSpiel.addSeparator();
@@ -136,7 +147,6 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		diffGroup.add(mnuSpielDiffMedium);
 		diffGroup.add(mnuSpielDiffHard);
 
-		
 		// Wahl der Schwierigkeit durch Radio
 		Difficulty diff = boardModel.getDifficulty();
 
@@ -153,6 +163,8 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 
 		mSpiel.add(mnuSpielDiffUser);
 
+		mSpiel.addSeparator();
+		mSpiel.add(mnuHighScore);
 		mSpiel.addSeparator();
 		mSpiel.add(mnuSpielBeenden);
 
@@ -179,28 +191,14 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	 * 
 	 * @return javax.swing.JProgressBar
 	 */
-	public JProgressBar getJProgressBar() {
-		if (progressBar == null) {
-			progressBar = new JProgressBar();
-			progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
-			progressBar.setStringPainted(true);
-		}
 
-		return progressBar;
-	}
-	
-	public void reset(){
+	public void reset() {
+		lRestMinen.setText(getRestMinen());
 		resetTimePlayed();
-		resetProgressBar();
 	}
 
 	private void resetTimePlayed() {
 		lZeit.setText("0");
-	}
-
-	private void resetProgressBar() {
-		progressBar.setValue(0);
-		progressBar.setMaximum(boardPanel.getCols() * boardPanel.getRows());
 	}
 
 	/**
@@ -211,6 +209,8 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 	public void addClickListener(MouseListener e) {
 		mnuSpielNeu.addMouseListener(e);
 		mnuHelpInfo.addMouseListener(e);
+		mnuSpielBeenden.addMouseListener(e);
+		mnuHighScore.addMouseListener(e);
 	}
 
 	/**
@@ -228,22 +228,36 @@ public class GameFrame extends JFrame implements IGameFrame, Observer {
 		return mnuSpielNeu;
 	}
 
+	public JMenuItem getMnuSpielBeenden() {
+		return mnuSpielBeenden;
+	}
+
+	public JMenuItem getMnuHighScore() {
+		return mnuHighScore;
+	}
+
 	public JMenuItem getMnuHelpInfo() {
 		return mnuHelpInfo;
 	}
 
 	public void showAbout() {
-		JOptionPane.showMessageDialog(null, "Dieses MinesWeeper basiert auf Java ^^", "MinesWeeper v0.3", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, authors, version, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public String getRestMinen() {
+		return restMinen + "";
+	}
+
+	public void setRestMinen(int restMinen) {
+		this.restMinen = restMinen;
 	}
 
 	@Override
 	public void update(Observable obs, Object obj) {
 		GameLogic gameLogic = (GameLogic) obj;
-		progressBar.setValue(gameLogic.getFeldZaehler());
-			lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
-			lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
-			
-		
+		lZeit.setText(String.valueOf(gameLogic.getTimePlayed()));
+		lRestMinen.setText(String.valueOf(gameLogic.getRestMinen()));
+
 	}
 
 }

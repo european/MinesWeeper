@@ -23,6 +23,7 @@ public class BoardController extends Observable {
 	private BoardModel boardModel;
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
+	private String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -104,8 +105,24 @@ public class BoardController extends Observable {
 			notifyObservers(gameLogic);
 		}
 	}
+	
+	public void setWinMessage(String winMessage) {
+    this.winMessage = winMessage;
+  }
 
-	public void showCell(MouseEvent e) {
+  public void setLoseMessage(String loseMessage) {
+    this.loseMessage = loseMessage;
+  }
+
+  public void setWinMessageTitle(String winMessageTitle) {
+    this.winMessageTitle = winMessageTitle;
+  }
+
+  public void setLoseMessageTitle(String loseMessageTitle) {
+    this.loseMessageTitle = loseMessageTitle;
+  }
+
+  public void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
 		int[] coords = new int[2];
 
@@ -116,18 +133,20 @@ public class BoardController extends Observable {
 		gameLogic.openField(y, x);
 
 		if (gameLogic.checkLoose(y, x)) {
-			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);
+			gameLogic.endGame();
+			feldButton.setButtonStatus(ButtonStatus.MINE_EXPLODED);			
 
-			int timePlayed = boardModel.getTimePlayed();
-			Object message = "Glückwunsch, Du hast Verloren! Und nur " + timePlayed + " Sekunden dafür benötigt. \n";
-			String title = "Du hast Verloren!";
+			int timePlayed = gameLogic.getTimePlayed();
+			Object message = loseMessage + timePlayed + " Sekunden. \n";
+			String title = loseMessageTitle;
 			showMessage(message, title);
 		}
 
 		if (gameLogic.checkWin()) {
-			int timePlayed = boardModel.getTimePlayed();
-			Object message = "Glückwunsch, Du hast Gewonnen! \n Du brauchtest " + timePlayed + " Sekunden um das Spiel zu beenden. \n";
-			String title = "Du hast Gewonnen!";
+			gameLogic.endGame();
+			int timePlayed = gameLogic.getTimePlayed();
+			Object message = winMessage + timePlayed + " Sekunden. \n";
+			String title = winMessageTitle;
 			showMessage(message, title);
 		}
 
@@ -138,6 +157,7 @@ public class BoardController extends Observable {
 	}
 
 	public void newGame() {
+	  gameLogic.setRestMinen(getAnzahlMinen());
 		gameLogic.newGame();
 		// rebuild the gamefield with MineButtons
 		boardPanel.setRebuild(true);
@@ -145,7 +165,6 @@ public class BoardController extends Observable {
 		boardPanel.setRows(getRows());
 
 		boardPanel.build();
-
 	}
 
 	public void setDifficulty(Difficulty difficulty) {

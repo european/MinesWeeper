@@ -28,31 +28,30 @@ public class FeldButton extends JButton {
 	private boolean mine;
 
 	/**
-	 * Erzeugt einen neuen FeldButton 
+	 * Erzeugt einen neuen FeldButton
 	 */
 	public FeldButton() {
 		coords = new int[2];
+
 		// StandartIcon und Status
 		setIcon(normIcon);
 		setButtonStatus(getDefault());
+
 		// Schrift Größe
 		setFont(new Font(getText(), Font.PLAIN, 10));
 		// Schrift Farbe
-		setForeground(new Color(255,0,0));
-		
+		setForeground(new Color(255, 0, 0));
+
 		// Button größe
 		setPreferredSize(new Dimension(18, 18));
 		setSize(18, 18);
 
 		// Ausrichtung der Textposition (Mittig)
 		setVerticalTextPosition(SwingConstants.CENTER);
-	    setHorizontalTextPosition(SwingConstants.CENTER);
-	    
-	    // Entfernt den Standart Margin
-	    setMargin(new Insets(0,0,0,0));		
-		
-	    // Fokus auf das Aktuelle Feld
-	    setFocusPainted(false);
+		setHorizontalTextPosition(SwingConstants.CENTER);
+
+		// Entfernt den Standart Margin
+		setMargin(new Insets(0, 0, 0, 0));
 
 		// Fokus auf das Aktuelle Feld
 		setFocusPainted(false);

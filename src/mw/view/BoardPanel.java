@@ -17,7 +17,7 @@ public class BoardPanel extends JPanel implements IBoardPanel {
 
 	private MouseListener mouseListener;
 	private boolean rebuild = false, initBuild = true;
-	
+
 	private int rows;
 	private int cols;
 
@@ -82,23 +82,18 @@ public class BoardPanel extends JPanel implements IBoardPanel {
 				if (getGameLogic().getChecked()[y][x]) {
 					if (board[y][x].getButtonStatus() == ButtonStatus.MINE || getGameLogic().isMine(y, x)) {
 						board[y][x].getMineIcon();
-
-					}
 					} else if (board[y][x].getButtonStatus() == ButtonStatus.MINE_EXPLODED) {
-
 						board[y][x].getMineExplodeIcon();
-
 					} else {
 						// Damit 0 nicht angezeigt wird
 						if (getGameLogic().getBoard()[y][x] != 0) {
 							board[y][x].setText(String.valueOf(getGameLogic().getBoard()[y][x]));
 						}
-
 						board[y][x].getFieldDisabledIcon();
 					}
 					board[y][x].setEnabled(false);
 					board[y][x].setButtonStatus(ButtonStatus.CLICKED);
-				
+				}
 			}
 		}
 	}
@@ -112,7 +107,8 @@ public class BoardPanel extends JPanel implements IBoardPanel {
 	}
 
 	/**
-	 * @param rows the rows to set
+	 * @param rows
+	 *            the rows to set
 	 */
 	public void setRows(int rows) {
 		this.rows = rows;
@@ -126,7 +122,8 @@ public class BoardPanel extends JPanel implements IBoardPanel {
 	}
 
 	/**
-	 * @param cols the cols to set
+	 * @param cols
+	 *            the cols to set
 	 */
 	public void setCols(int cols) {
 		this.cols = cols;
@@ -142,12 +139,12 @@ public class BoardPanel extends JPanel implements IBoardPanel {
 	@Override
 	public void setGameLogic(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
-		
+
 	}
 
 	@Override
 	public GameLogic getGameLogic() {
 		return this.gameLogic;
-	}	
+	}
 
 }

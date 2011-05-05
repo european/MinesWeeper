@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="newBoardModel" class="mw.model.BoardModel">
+ <!-- <constructor-arg><ref local="difficulty"/></constructor-arg> -->
+  </bean>
+
+  <bean id="newGameFrame" class="mw.view.GameFrame">
+   <property name="winTitle" value="Minesweeper v0.3"/>
+     <property name="authors" value="Nils Werner und Sebastian Ahlen"/>
+     <property name="version" value="Minesweeper v0.3 03.05.2011"/>
+        <constructor-arg index="1"><ref local="newBoardModel"/></constructor-arg>
+        <constructor-arg index="0"><ref local="newBoardPanel"/></constructor-arg>
+  </bean>
+  
+  <bean id="newBoardPanel" class="mw.view.BoardPanel">
+  </bean>
+    
+ <bean id="difficulty" class="mw.model.Difficulty" factory-method="valueOf">
+    <constructor-arg>
+      <value>EINFACH</value>
+    </constructor-arg>
+ </bean>
+ 
+ <bean id="newBoardController" class="mw.controller.BoardController">
+  <property name="winMessage" value="Glückwunsch, Du hast Gewonnen! Du brauchtest " />
+       <property name="winMessageTitle" value="Du hast Gewonnen!" />
+       <property name="loseMessage" value="Glückwunsch, Du hast Verloren! Du brauchtest " />
+       <property name="loseMessageTitle" value="Du hast Verloren!" />
+       <constructor-arg><ref local="newGameFrame"/></constructor-arg>
+       <constructor-arg><ref local="newBoardPanel"/></constructor-arg>
+ </bean>
+ 
+  <bean id="gameController" class="mw.controller.GameController">
+    <constructor-arg index="0"><ref local="newGameFrame"/></constructor-arg>
+    <constructor-arg index="1"><ref local="newBoardController"/></constructor-arg>
+  </bean>
+  
+
+
+</beans>

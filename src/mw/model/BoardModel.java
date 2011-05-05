@@ -5,11 +5,7 @@ public class BoardModel {
 	private int rows;
 	private int cols;
 	private int anzahlMinen;
-
-	private int timePlayed;
-
-	private int feldZaehler;
-
+	
 	private static final int MINEVALUE = -1;
 	private static final int EMPTYVALUE = 0;
 
@@ -80,35 +76,4 @@ public class BoardModel {
 	public Difficulty getDifficulty() {
 		return difficulty;
 	}
-
-	/**
-	 * @return the timePlayed
-	 */
-	public int getTimePlayed() {
-		return timePlayed;
-	}
-
-	/**
-	 * @param timePlayed
-	 *            the timePlayed to set
-	 */
-	public void setTimePlayed(int timePlayed) {
-		this.timePlayed = timePlayed;
-	}
-
-	/**
-	 * @return the feldZaehler
-	 */
-	public int getFeldZaehler() {
-		return feldZaehler;
-	}
-
-	/**
-	 * @param feldZaehler
-	 *            the feldZaehler to set
-	 */
-	public void setFeldZaehler(int feldZaehler) {
-		this.feldZaehler = feldZaehler;
-	}
-
 }
