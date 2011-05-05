@@ -44,7 +44,7 @@ public class GameFrame extends JFrame implements Observer {
 	// private GameLogic gameLogic;
 	private BoardModel boardModel;
 
-	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo;
+	private JMenuItem mnuSpielNeu, mnuSpielDiffUser, mnuSpielBeenden, mnuExtraHelp, mnuHelpInfo,mnuHighScore;
 
 	private ButtonGroup diffGroup;
 	private JRadioButtonMenuItem mnuSpeilDiffEasy;
@@ -134,6 +134,8 @@ public class GameFrame extends JFrame implements Observer {
 
 		mnuSpielBeenden = new JMenuItem("Beenden");
 		mnuSpielBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		
+		mnuHighScore = new JMenuItem("HighScore");
 
 		mSpiel.add(mnuSpielNeu);
 
@@ -166,6 +168,8 @@ public class GameFrame extends JFrame implements Observer {
 
 		mSpiel.add(mnuSpielDiffUser);
 
+		mSpiel.addSeparator();
+		mSpiel.add(mnuHighScore);
 		mSpiel.addSeparator();
 		mSpiel.add(mnuSpielBeenden);
 
@@ -226,6 +230,7 @@ public class GameFrame extends JFrame implements Observer {
 		mnuSpielNeu.addMouseListener(e);
 		mnuHelpInfo.addMouseListener(e);
 		mnuSpielBeenden.addMouseListener(e);
+		mnuHighScore.addMouseListener(e);
 	}
 
 	/**
@@ -245,6 +250,10 @@ public class GameFrame extends JFrame implements Observer {
 	
 	public JMenuItem getMnuSpielBeenden() {
 	  return mnuSpielBeenden;
+	}
+	
+	public JMenuItem getMnuHighScore() {
+	  return mnuHighScore;
 	}
 
 	public JMenuItem getMnuHelpInfo() {

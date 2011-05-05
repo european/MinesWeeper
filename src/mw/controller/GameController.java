@@ -16,10 +16,12 @@ import javax.swing.text.NumberFormatter;
 import mw.model.Difficulty;
 import mw.view.BoardPanel;
 import mw.view.GameFrame;
+import mw.view.HighScoreFrame;
 
 public class GameController {
 
 	private GameFrame gameFrame;
+	private HighScoreFrame highScoreFrame;
 	public BoardController boardController;
 
 	public GameController(GameFrame gameFrame, BoardPanel boardPanel, BoardController boardController) {
@@ -50,6 +52,11 @@ public class GameController {
 				    else if (source == gameFrame.getMnuSpielBeenden()) {
 				      System.exit(0);
 				}
+				    else if (source == gameFrame.getMnuHighScore()) {
+				      highScoreFrame = new HighScoreFrame(300,300);
+				      highScoreFrame.setFrameLocation();
+				      highScoreFrame.initialize();
+				    }
 				// Highscore
 			}
 
