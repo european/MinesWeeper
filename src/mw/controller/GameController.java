@@ -54,11 +54,8 @@ public class GameController {
 				      System.exit(0);
 				}
 				    else if (source == gameFrame.getMnuHighScore()) {
-				      highScoreFrame.setFrameLocation();
 				      highScoreFrame.initialize();
-				      highScoreFrame.getHighScoreFromFile();
 				    }
-				// Highscore
 			}
 
 		}
