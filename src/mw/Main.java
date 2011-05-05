@@ -1,9 +1,7 @@
 package mw;
 
-import mw.controller.BoardController;
 import mw.controller.GameController;
 import mw.model.BoardModel;
-import mw.model.Difficulty;
 import mw.view.BoardPanel;
 import mw.view.GameFrame;
 
@@ -13,22 +11,24 @@ public class Main {
 	 * 
 	 */
 	public static void main(String[] args) {
-		// Setzt die Schwierigkeitsstufe
-		Difficulty diff = Difficulty.EINFACH;
-		// setzt die Spiel einstellungen
-		BoardModel boardModel = new BoardModel(diff);
-		BoardPanel boardPanel = new BoardPanel(boardModel);
+		
+		BoardModel boardModel = new BoardModel();
+		BoardPanel boardPanel = new BoardPanel();
 		GameFrame gameFrame = new GameFrame(boardPanel, boardModel);
+//		BoardController boardController = null;
 
-		boardModel.addObserver(gameFrame);
+//		boardModel.addObserver(boardPanel);
+//		boardModel.addObserver(gameFrame);
 		
 		// Erstellt das SpielFeld
-		new BoardController(boardModel, boardPanel);
-		new GameController(boardModel, gameFrame, boardPanel);
-
-		gameFrame.pack();
-		gameFrame.repaint();
-		gameFrame.validate();
+//		new BoardController(boardModel, boardPanel);
+		
+		new GameController(gameFrame, boardPanel);
+		
+//
+//		gameFrame.pack();
+//		gameFrame.repaint();
+//		gameFrame.validate();
 
 	}
 
