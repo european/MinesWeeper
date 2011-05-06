@@ -35,27 +35,27 @@ public class HighScoreFrame extends JFrame {
   }
 
   public void getHighScoreFromFile() {
-    BufferedReader reader;
-
-    try {
-      reader = new BufferedReader(new FileReader("highScore.txt"));
-      String zeile;
-      int index = 1;
-   //   ArrayList<String> values = new ArrayList<String>();
-      while ((zeile = reader.readLine()) != null) {
-        /*
-         * while (zeile != null) { values.add(zeile.split(";").toString());
-         * System.out.println(zeile); }
-         */
-   //     System.out.println(values.size());
-        System.out.println(zeile);
-        addHighScoreToPanel(index);
-        index = index + 1;
-      }
-
-    } catch (IOException e) {
-      System.err.println("Fehler beim Laden des High Scores.");
-    }
+//    BufferedReader reader;
+//
+//    try {
+//      reader = new BufferedReader(new FileReader("highScore.txt"));
+//      String zeile;
+//      int index = 1;
+//   //   ArrayList<String> values = new ArrayList<String>();
+//      while ((zeile = reader.readLine()) != null) {
+//        /*
+//         * while (zeile != null) { values.add(zeile.split(";").toString());
+//         * System.out.println(zeile); }
+//         */
+//   //     System.out.println(values.size());
+//        System.out.println(zeile);
+//        addHighScoreToPanel(index);
+//        index = index + 1;
+//      }
+//
+//    } catch (IOException e) {
+//      System.err.println("Fehler beim Laden des High Scores.");
+//    }
   }
 
   public void initialize() {
