@@ -1,89 +1,93 @@
 package mw.model;
 
 public enum Difficulty {
-  EINFACH(9, 9, 10), MITTEL(16, 16, 40), SCHWER(30, 16, 99), BENUTZERDEFINIERT(9, 9, 10);
+	EINFACH(9, 9, 10), MITTEL(16, 16, 40), SCHWER(30, 16, 99), BENUTZERDEFINIERT() {
+		@Override
+		public void setRows(int rows) {
+			this.rows = rows;
+		}
 
-  int rows;
+		@Override
+		public void setCols(int cols) {
+			this.cols = cols;
+		}
 
-  int cols;
+		@Override
+		public void setAnzahlMinen(int anzahlMinen) {
+			this.anzahlMinen = anzahlMinen;
+		}
+	};
 
-  int anzahlMinen;
+	int rows;
 
-  int anzahlRestMinen;
+	int cols;
 
-  String diff;
+	int anzahlMinen;
 
-  /**
-   * @param rows
-   * @param cols
-   * @param anzahlMinen
-   */
-  private Difficulty(int rows, int cols, int anzahlMinen) {
-    this.rows = rows;
-    this.cols = cols;
-    this.anzahlMinen = anzahlMinen;
-    this.anzahlRestMinen = anzahlMinen;
-  }
+	/**
+	 * @param rows
+	 * @param cols
+	 * @param anzahlMinen
+	 */
+	private Difficulty(int rows, int cols, int anzahlMinen) {
+		this.rows = rows;
+		this.cols = cols;
+		this.anzahlMinen = anzahlMinen;
+	}
+	/**
+	 * 
+	 */
+	private Difficulty() {
 
-  /**
-   * Anhand des String wird der Enum Wert ermittelt und zurück gegeben
-   * 
-   * @param name
-   * @return Enum
-   */
-  public static Difficulty fromString(String name) {
-    if (Difficulty.class != null && name != null) {
-      try {
-        return Enum.valueOf(Difficulty.class, name.trim().toUpperCase());
-      } catch (IllegalArgumentException ex) {}
-    }
+	}
 
-    return null;
-  }
+	public void setRows(int rows) {
+		throw new UnsupportedOperationException("Setter für Standart Difficultys darf nicht aufgerufen werden");
+	}
 
-  /**
-   * @return the rows
-   */
-  public int getRows() {
-    return rows;
-  }
+	public void setCols(int cols) {
+		throw new UnsupportedOperationException("Setter für Standart Difficultys darf nicht aufgerufen werden");
+	}
 
-  /**
-   * @return the cols
-   */
-  public int getCols() {
-    return cols;
-  }
+	public void setAnzahlMinen(int anzahlMinen) {
+		throw new UnsupportedOperationException("Setter für Standart Difficultys darf nicht aufgerufen werden");
+	}
 
-  /**
-   * @return the anzahlMinen
-   */
-  public int getAnzahlMinen() {
-    return anzahlMinen;
-  }
+	/**
+	 * Anhand des String wird der Enum Wert ermittelt und zurück gegeben
+	 * 
+	 * @param name
+	 * @return Enum
+	 */
+	public static Difficulty fromString(String name) {
+		if (Difficulty.class != null && name != null) {
+			try {
+				return Enum.valueOf(Difficulty.class, name.trim().toUpperCase());
+			} catch (IllegalArgumentException ex) {
+			}
+		}
 
-  /**
-   * @return the anzahlRestMinen
-   */
-  public int getAnzahlRestMinen() {
-    return anzahlRestMinen;
-  }
+		return null;
+	}
 
-  public String getDiff() {
-    switch (this) {
-      case EINFACH:
-        diff = "Einfach";
-        break;
-      case MITTEL:
-        diff = "Mittel";
-        break;
-      case SCHWER:
-        diff = "Schwer";
-        break;
-      default:
-        diff = null;
-    }
-    return diff;
-  }
+	/**
+	 * @return the rows
+	 */
+	public int getRows() {
+		return rows;
+	}
 
+	/**
+	 * @return the cols
+	 */
+	public int getCols() {
+		return cols;
+	}
+
+	/**
+	 * @return the anzahlMinen
+	 */
+	public int getAnzahlMinen() {
+		return anzahlMinen;
+	}
 }

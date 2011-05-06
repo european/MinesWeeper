@@ -185,16 +185,15 @@ public class GameLogic {
 	 * @param difficulty
 	 */
 	public void setDifficulty(Difficulty difficulty) {
-		boardModel.setCols(difficulty.getCols());
-		boardModel.setRows(difficulty.getRows());
-		boardModel.setAnzahlMinen(difficulty.getAnzahlMinen());
-		setRestMinen(difficulty.getAnzahlRestMinen());
+		boardModel.setDifficulty(difficulty);
 	}
 
 	public void setDifficultyUser(int rows, int cols, int anzahlMinen) {
-		boardModel.setRows(rows);
-		boardModel.setCols(cols);
-		boardModel.setAnzahlMinen(anzahlMinen);
+		Difficulty diff = Difficulty.BENUTZERDEFINIERT;
+		boardModel.setDifficulty(diff);
+		diff.setAnzahlMinen(anzahlMinen);
+		diff.setRows(rows);
+		diff.setCols(cols);
 		setRestMinen(anzahlMinen);
 	}
 

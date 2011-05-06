@@ -124,52 +124,52 @@ public class BoardController extends Observable {
     this.loseMessageTitle = loseMessageTitle;
   }
   
-  private void getHighScoreFromFile(int timePlayed, String diff){
-    BufferedReader reader;
-    
-    try {
-        reader = new BufferedReader(new FileReader("highScore.txt"));
-        String zeile = reader.readLine();
-        ArrayList<String> values = new ArrayList<String>();
- /*       while (zeile != null) {
-            values.add(zeile.split(";").toString());
-            System.out.println(zeile);
-        } */
-        System.out.println(values.size());
-        System.out.println(zeile);
-        writeHighScoreToFile(timePlayed, zeile, diff);
-
-    } catch (IOException e) {
-        System.err.println("Fehler beim Laden des High Scores."); 
-    }
-}  
-  
-  private void writeHighScoreToFile(int timePlayed, String text, String diff){
-    BufferedWriter writer = null;
-    String time;
-    time = String.valueOf(timePlayed);
-    
-    try {
-        writer = new BufferedWriter(new FileWriter("highScore.txt")); 
-        writer.write(diff+";"+time+";");
-        writer.newLine();
-        writer.write(text);
-        System.out.println(timePlayed + "Sekunden "+"gespeichert");
-        
-
-    } catch (IOException e) {
-        System.err.println("Fehler beim Speichern des High Scores.");
-    }
-    finally {
-      try { if (writer != null){
-       writer.flush();
-       writer.close();
-      }
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
-    }
-}
+//  private void getHighScoreFromFile(int timePlayed, String diff){
+//    BufferedReader reader;
+//    
+//    try {
+//        reader = new BufferedReader(new FileReader("highScore.txt"));
+//        String zeile = reader.readLine();
+//        ArrayList<String> values = new ArrayList<String>();
+// /*       while (zeile != null) {
+//            values.add(zeile.split(";").toString());
+//            System.out.println(zeile);
+//        } */
+//        System.out.println(values.size());
+//        System.out.println(zeile);
+//        writeHighScoreToFile(timePlayed, zeile, diff);
+//
+//    } catch (IOException e) {
+//        System.err.println("Fehler beim Laden des High Scores."); 
+//    }
+//}  
+//  
+//  private void writeHighScoreToFile(int timePlayed, String text, String diff){
+//    BufferedWriter writer = null;
+//    String time;
+//    time = String.valueOf(timePlayed);
+//    
+//    try {
+//        writer = new BufferedWriter(new FileWriter("highScore.txt")); 
+//        writer.write(diff+";"+time+";");
+//        writer.newLine();
+//        writer.write(text);
+//        System.out.println(timePlayed + "Sekunden "+"gespeichert");
+//        
+//
+//    } catch (IOException e) {
+//        System.err.println("Fehler beim Speichern des High Scores.");
+//    }
+//    finally {
+//      try { if (writer != null){
+//       writer.flush();
+//       writer.close();
+//      }
+//    } catch (IOException ex) {
+//        ex.printStackTrace();
+//    }
+//    }
+//}
 
   public void showCell(MouseEvent e) {
 		FeldButton feldButton = (FeldButton) e.getSource();
@@ -180,6 +180,8 @@ public class BoardController extends Observable {
 		int x = coords[1];
 		// Sonst öffne Feld
 		gameLogic.openField(y, x);
+		
+//		System.out.println(boardModel.getDifficulty());
 
 		if (gameLogic.checkLoose(y, x)) {
 			gameLogic.endGame();
@@ -188,7 +190,7 @@ public class BoardController extends Observable {
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
 			String title = loseMessageTitle;
 			showMessage(message, title);
-	    getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
+//	    getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
 		}
 
 		if (gameLogic.checkWin()) {
@@ -197,7 +199,7 @@ public class BoardController extends Observable {
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;
 			showMessage(message, title);
-			getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
+//			getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
 		}
 
 	}
@@ -215,10 +217,13 @@ public class BoardController extends Observable {
 		boardPanel.setRows(getRows());
 
 		boardPanel.build();
+		
+		
 	}
 
 	public void setDifficulty(Difficulty difficulty) {
 		gameLogic.setDifficulty(difficulty);
+//		boardModel.setDifficulty(difficulty);
 		setChanged();
 		notifyObservers(gameLogic);
 	}
