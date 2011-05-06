@@ -1,6 +1,7 @@
 package mw.model;
 
 public enum Difficulty {
+
 	EINFACH(9, 9, 10), MITTEL(16, 16, 40), SCHWER(30, 16, 99), BENUTZERDEFINIERT() {
 		@Override
 		public void setRows(int rows) {
