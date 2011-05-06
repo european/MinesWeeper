@@ -26,6 +26,7 @@ public class BoardController extends Observable {
 	private IBoardPanel boardPanel;
 	private GameLogic gameLogic;
 	private String winMessage,loseMessage,winMessageTitle,loseMessageTitle;
+	public String difftemp;
 
 	/**
 	 * Initiates the board variable with the appropriate difficulty setting
@@ -70,7 +71,12 @@ public class BoardController extends Observable {
 	public void init() {
 		Difficulty diff = Difficulty.EINFACH;
 		gameLogic.setDifficulty(diff);
+		difftemp = diff.toString();
 		newGame();
+	}
+	
+	public void difftemp(String diff) {
+	  this.difftemp = diff;
 	}
 
 	/**
@@ -144,7 +150,7 @@ public class BoardController extends Observable {
     }
 }  
   
-  private void writeHighScoreToFile(int timePlayed, String text, String diff){
+  private void writeHighScoreToFile(int timePlayed, String zeile, String diff){
     BufferedWriter writer = null;
     String time;
     time = String.valueOf(timePlayed);
@@ -152,8 +158,8 @@ public class BoardController extends Observable {
     try {
         writer = new BufferedWriter(new FileWriter("highScore.txt")); 
         writer.write(diff+";"+time+";");
-        writer.newLine();
-        writer.write(text);
+//        writer.newLine();
+        writer.write(zeile);
         System.out.println(timePlayed + "Sekunden "+"gespeichert");
         
 
@@ -188,7 +194,8 @@ public class BoardController extends Observable {
 			Object message = loseMessage + timePlayed + " Sekunden. \n";
 			String title = loseMessageTitle;
 			showMessage(message, title);
-	    getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
+			System.out.println(boardModel.getDifficulty());
+	    getHighScoreFromFile(timePlayed, difftemp);
 		}
 
 		if (gameLogic.checkWin()) {
@@ -197,7 +204,7 @@ public class BoardController extends Observable {
 			Object message = winMessage + timePlayed + " Sekunden. \n";
 			String title = winMessageTitle;
 			showMessage(message, title);
-			getHighScoreFromFile(timePlayed, boardModel.getDifficulty().getDiff());
+			getHighScoreFromFile(timePlayed, difftemp);
 		}
 
 	}

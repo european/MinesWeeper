@@ -33,7 +33,6 @@ public class GameController {
 		gameFrame.gameFrameInitialize();
 		gameFrame.addClickListener(new NewSpielButtonListner());
 		gameFrame.addDifficultyListener(new DiffChoiceListener());
-		highScoreFrame = new HighScoreFrame(300,300);
 
 		gameFrame.pack();
 		gameFrame.repaint();
@@ -54,7 +53,7 @@ public class GameController {
 				      System.exit(0);
 				}
 				    else if (source == gameFrame.getMnuHighScore()) {
-				      highScoreFrame.initialize();
+				      highScoreFrame = new HighScoreFrame(150,150);
 				    }
 			}
 
@@ -71,6 +70,7 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			String diff = e.getActionCommand();
 			Difficulty difficulty = Difficulty.fromString(diff);
+			boardController.difftemp = difficulty.toString();
 			if (difficulty == Difficulty.BENUTZERDEFINIERT) {
 				showBenutzerdefiniert();
 			} else {

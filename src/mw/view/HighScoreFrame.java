@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 public class HighScoreFrame extends JFrame {
 
@@ -20,7 +22,7 @@ public class HighScoreFrame extends JFrame {
 
   public String score;
 
-  public JLabel[] highScore = new JLabel[10];
+  public JLabel[] highScore = new JLabel[20];
 
   public Container content;
 
@@ -28,28 +30,28 @@ public class HighScoreFrame extends JFrame {
 
   public GridLayout layout = new GridLayout();
 
-  public int index;
+  public int test;
+  
+  private String zeile;
 
   public HighScoreFrame(int height, int width) {
     this.setSize(width, height);
+    initialize();
   }
+  
+  //Die highScore.txt wird eingeladen und verarbeitet.
 
   public void getHighScoreFromFile() {
     BufferedReader reader;
 
     try {
       reader = new BufferedReader(new FileReader("highScore.txt"));
-      String zeile;
-      int index = 1;
-   //   ArrayList<String> values = new ArrayList<String>();
+      int index = 0;
+      String[] values;
       while ((zeile = reader.readLine()) != null) {
-        /*
-         * while (zeile != null) { values.add(zeile.split(";").toString());
-         * System.out.println(zeile); }
-         */
-   //     System.out.println(values.size());
-        System.out.println(zeile);
-        addHighScoreToPanel(index);
+        values = zeile.split(";");
+        System.out.println("Datei Erfolgreich geladen: " + zeile);
+        stringArrayParser(24,values);
         index = index + 1;
       }
 
@@ -57,12 +59,14 @@ public class HighScoreFrame extends JFrame {
       System.err.println("Fehler beim Laden des High Scores.");
     }
   }
-
+  
+  //Die Initialisierungsmethode des HighScoreFrames.
+  
   public void initialize() {
     setFrameLocation();
     this.setVisible(true);
     this.setResizable(false);
-    this.setDefaultCloseOperation(HighScoreFrame.HIDE_ON_CLOSE);
+    this.setDefaultCloseOperation(HighScoreFrame.DISPOSE_ON_CLOSE);
     this.setTitle("HighScore");
     this.add(panel);
     configLayOut();
@@ -71,8 +75,33 @@ public class HighScoreFrame extends JFrame {
 
   public void configLayOut() {
     layout.setRows(10);
-    layout.setColumns(1);
+    layout.setColumns(2);
     panel.setLayout(layout);
+  }
+  
+  //Diese Methode läuft das Array ab und übergibt die einzelnen Zellen des Arrays dem addHighScoreToPanel
+  
+  private String stringArrayParser(int arrayIndex, String[] stringArray) {
+   // int temp = 0;
+    String score;
+    score = null;
+    if (arrayIndex >= 0) {
+      try {
+    //  try {
+   //   temp = Integer.parseInt(stringArray[arrayIndex]);
+   //   } catch (NumberFormatException e){}
+          score = stringArray[arrayIndex];
+          addHighScoreToPanel(arrayIndex,score);
+          System.out.println(stringArray[arrayIndex]);
+          arrayIndex = arrayIndex - 1;
+          stringArrayParser(arrayIndex, stringArray);
+      }
+        catch (ArrayIndexOutOfBoundsException e){
+          arrayIndex = arrayIndex - 1;
+          stringArrayParser(arrayIndex,stringArray);
+        }
+    }    
+    return score;
   }
 
   public void setFrameLocation() {
@@ -81,9 +110,11 @@ public class HighScoreFrame extends JFrame {
     Rectangle frameDim = getBounds();
     setLocation((screenDim.width - frameDim.width) / 2, (screenDim.height - frameDim.height) / 2);
   }
+  
+  //Diese Methode fügt die einzelnen HighScores dem Panel zu.
 
-  public void addHighScoreToPanel(int index) {
-    highScore[index] = new JLabel(score + " Punkte");
+  public void addHighScoreToPanel(int index, String score) {
+    highScore[index] = new JLabel(score);
     panel.add(highScore[index]);
   }
 

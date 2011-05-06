@@ -68,22 +68,4 @@ public enum Difficulty {
   public int getAnzahlRestMinen() {
     return anzahlRestMinen;
   }
-
-  public String getDiff() {
-    switch (this) {
-      case EINFACH:
-        diff = "Einfach";
-        break;
-      case MITTEL:
-        diff = "Mittel";
-        break;
-      case SCHWER:
-        diff = "Schwer";
-        break;
-      default:
-        diff = null;
-    }
-    return diff;
-  }
-
 }
